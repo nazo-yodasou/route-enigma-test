@@ -943,7 +943,7 @@ class Component extends DCLogic {
   }
   // ===== スリーシェルゲーム（Q.28） =====
   // ラウンドごとの入れ替え回数と1回の速さ（ミリ秒）。3ラウンド連続で正解するとクリア。
-  tsRounds() { return [{ swaps: 12, ms: 280 }, { swaps: 18, ms: 210 }, { swaps: 24, ms: 150 }]; }
+  tsRounds() { return [{ swaps: 12, ms: 280 }, { swaps: 18, ms: 210 }, { swaps: 24, ms: 190 }]; }
   tsFresh(failed) { return { slots: [0, 1, 2], ball: -1, status: 'ready', round: 1, lifted: {}, picked: -1, front: -1, back: -1, ms: 280, failed: failed || 0 }; }
   tsSet(patch) {
     const cur = (this.state && this.state.ts) || this.tsFresh(0);
