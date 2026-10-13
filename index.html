@@ -1,0 +1,1304 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROUTE ENIGMA 〜夜明けの鍵を奪い合え〜</title>
+<meta name="description" content="車と謎解きを組み合わせた宿泊争奪戦バトル。全30チームが車で街を駆け、謎を解き、今夜の宿を奪い合う。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&amp;family=Shippori+Mincho+B1:wght@800&amp;family=Yellowtail&amp;family=Zen+Kaku+Gothic+New:wght@400;500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#111111}a:hover{color:#444444}
+summary{list-style:none;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+details[open] .chev{transform:rotate(180deg)}
+.chev{transition:transform .2s ease;flex-shrink:0}
+.pz-track{scrollbar-width:none}
+.pz-track::-webkit-scrollbar{display:none}
+button:disabled{cursor:default}
+h1,h2,h3,p,summary{word-break:auto-phrase;line-break:strict}
+section{scroll-margin-top:84px}
+@media (max-width:720px){.nav-link{display:none!important}}
+.photo-track{animation:photo-scroll 40s linear infinite}
+.photo-marquee:hover .photo-track{animation-play-state:paused}
+@keyframes photo-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.photo-track{animation:none}.photo-marquee{overflow-x:auto}}
+.rank-track{animation:rank-scroll 32s linear infinite}
+.rank-marquee:hover .rank-track{animation-play-state:paused}
+@keyframes rank-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion: reduce){.rank-track{animation:none}.rank-marquee{overflow-x:auto}}
+</style>
+</head>
+<body>
+<div id="dc-root"></div>
+<template id="dc-tpl">
+<div style="background: #FFFFFF; color: #111111; font-family: 'Zen Kaku Gothic New', 'Hiragino Sans', sans-serif; font-size: 16px; line-height: 1.8; min-height: 100vh">
+
+<!-- Header -->
+<header style="position: sticky; top: 0; z-index: 10; background: #FFFFFF; border-bottom: 3px solid #111111">
+<div style="max-width: 1240px; margin: 0 auto; padding: 10px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px">
+<a href="#top" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #111111; background: {{accent}}; padding: 6px 14px; border: 2px solid #111111">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg>
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 24px; line-height: 1; letter-spacing: 0.06em">ROUTE ENIGMA</span>
+</a>
+<nav aria-label="ページ内メニュー" style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; font-size: 14px; font-weight: 900"><a href="#concept" class="nav-link" style="color: #111111; text-decoration: none; padding: 10px 0">遊び方</a><a href="#ranking" class="nav-link" style="color: #111111; text-decoration: none; padding: 10px 0">宿泊ランク</a><a href="#detail" class="nav-link" style="color: #111111; text-decoration: none; padding: 10px 0">イベント詳細</a><a href="#notice" class="nav-link" style="color: #111111; text-decoration: none; padding: 10px 0">注意事項</a><a href="#faq" class="nav-link" style="color: #111111; text-decoration: none; padding: 10px 0">よくある質問</a><a href="#entry" style="background: #111111; color: {{accent}}; text-decoration: none; padding: 10px 20px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">最初の謎</a></nav>
+</div>
+</header>
+
+<!-- Hero photo collage -->
+<section id="top" style="position: relative; background: #111111">
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<img src="images/f2bc31b1319b3ea585504b14d70c0a94.jpg" alt="夜の東京駅前を車が走り抜ける風景" style="flex: 2 1 520px; min-width: 0; height: clamp(300px, 44vw, 620px); object-fit: cover; object-position: 60% 50%; display: block">
+<img src="images/9bcca27e840fed34c8fa15fa7c5e7c30.jpg" alt="夕暮れの街でスマートフォンを手に行き先を指さす2人" style="flex: 1 1 150px; min-width: 0; height: clamp(300px, 44vw, 620px); object-fit: cover; object-position: 50% 50%; display: block">
+<img src="images/54169ffb3d57617ce404e1715f177731.jpg" alt="路地の先にそびえる夕暮れの東京スカイツリー" style="flex: 1 1 150px; min-width: 0; height: clamp(300px, 44vw, 620px); object-fit: cover; object-position: 55% 30%; display: block">
+</div>
+<div style="position: absolute; top: clamp(20px, 4vw, 56px); left: clamp(16px, 5vw, 72px); writing-mode: vertical-rl; width: max-content; height: max-content; background: #111111; border: 3px solid {{accent}}; padding: clamp(14px, 2vw, 26px) clamp(10px, 1.4vw, 18px); box-shadow: 8px 8px 0 {{accent}}">
+<p style="margin: 0; writing-mode: vertical-rl; white-space: nowrap; font-weight: 900; font-size: clamp(22px, 3.2vw, 44px); line-height: 1.35; letter-spacing: 0.12em; color: {{accent}}">日が沈んだら、<br>ハンドルを握れ。</p>
+</div>
+</section>
+
+<!-- Title band -->
+<section style="position: relative; overflow: hidden; background: {{accent}}; border-bottom: 3px solid #111111">
+<div style="max-width: 1240px; margin: 0 auto; padding: clamp(40px, 6vw, 72px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; position: relative">
+<span aria-hidden="true" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -46%) rotate(-6deg); font-family: 'Yellowtail', cursive; font-size: clamp(80px, 16vw, 230px); line-height: 1; white-space: nowrap; color: rgba(17,17,17,0.08)">Night Drive</span>
+<p style="margin: 0; position: relative; font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: clamp(13px, 3.6vw, 18px); letter-spacing: 0.28em; white-space: nowrap">DRIVE × MYSTERY × STAY</p>
+<h1 style="margin: 0; position: relative; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(64px, 12vw, 168px); line-height: 0.9; letter-spacing: 0.03em; color: #111111; text-shadow: 6px 6px 0 #FFFFFF">ROUTE ENIGMA</h1>
+<p style="margin: 6px 0 0; position: relative; font-family: 'Shippori Mincho B1', serif; font-weight: 800; font-size: clamp(19px, 5.4vw, 34px); letter-spacing: 0.1em; white-space: nowrap">〜夜明けの鍵を奪い合え〜</p>
+</div>
+</section>
+
+<!-- Intro -->
+<section style="max-width: 1240px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 40px">
+<p style="margin: 0; font-size: clamp(15px, 4vw, 18px); font-weight: 500; line-height: 2.1">日が沈んだら、ハンドルを握れ。<br>全30チームが車で街を駆け、謎を解き、今夜の宿を奪い合う。<br>最高級の宿に泊まれるのは、先着わずか5チーム。<br>最後に辿り着いた3チームを<span style="white-space: nowrap">待つのは——。</span></p>
+<div style="width: 100%; max-width: 860px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px 16px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<div style="width: 112px; height: 112px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"></circle><path d="M12 9v4l3 2"></path><path d="M9 2h6"></path></svg></div>
+<div style="font-size: 13px; font-weight: 700; color: #444444">体験時間</div>
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 28px; line-height: 1">15:45–23:00</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<div style="width: 112px; height: 112px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"></circle><circle cx="16" cy="8" r="3"></circle><path d="M2.5 20a5.5 5.5 0 0 1 11 0"></path><path d="M10.5 20a5.5 5.5 0 0 1 11 0"></path></svg></div>
+<div style="font-size: 13px; font-weight: 700; color: #444444">1チーム</div>
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 28px; line-height: 1">2–3<span style="font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 16px; margin-left: 4px">名</span></div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<div style="width: 112px; height: 112px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16h16v-4l-2-5H6l-2 5z"></path><path d="M4 12h16"></path><circle cx="7.5" cy="16.5" r="2"></circle><circle cx="16.5" cy="16.5" r="2"></circle></svg></div>
+<div style="font-size: 13px; font-weight: 700; color: #444444">参加チーム</div>
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 28px; line-height: 1">30<span style="font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 16px; margin-left: 4px">組</span></div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+<div style="width: 112px; height: 112px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V10l9-6 9 6v11"></path><path d="M9 21v-6h6v6"></path><path d="M3 21h18"></path></svg></div>
+<div style="font-size: 13px; font-weight: 700; color: #444444">宿泊先</div>
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 28px; line-height: 1">5<span style="font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 16px; margin-left: 4px">ランク</span></div>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 18px">
+<a href="#entry" style="background: {{accent}}; color: #111111; text-decoration: none; font-weight: 900; font-size: 16px; padding: 0 32px; min-height: 56px; border: 2px solid #111111; box-shadow: 5px 5px 0 #111111; display: inline-flex; align-items: center; gap: 12px"><span>最初の謎へ</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></a>
+<a href="#concept" style="background: #FFFFFF; color: #111111; text-decoration: none; font-weight: 900; font-size: 16px; padding: 0 28px; min-height: 56px; border: 2px solid #111111; box-shadow: 5px 5px 0 #111111; display: inline-flex; align-items: center">ルールを見る</a>
+</div>
+</section>
+
+<!-- Photo strip -->
+<div>
+<div class="photo-marquee" style="overflow: hidden; border-top: 3px solid #111111; border-bottom: 3px solid #111111; background: #111111">
+<div class="photo-track" style="display: flex; width: max-content">
+<img src="images/fc774577dac7bedd0be9fd84e25ac49f.jpg" alt="夜の東京の街並み" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/eeb412490f7a240bba8cf7c9dc441b4b.jpg" alt="夕日の中を走る車のサイドミラー" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/19a98d77848ded3892352d0bab105ddf.jpg" alt="スマートフォンを操作する手元" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/308a988e50278bb052adeae01333980a.jpg" alt="車内で盛り上がる3人のチーム" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/b3939a2d5b180bf04aeca10c24918f53.jpg" alt="ホテルのカードキーを持つ手" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/a615914bc5edffeb9238cb7c23506569.jpg" alt="ホテルのロビー" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/fc774577dac7bedd0be9fd84e25ac49f.jpg" alt="" aria-hidden="true" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/eeb412490f7a240bba8cf7c9dc441b4b.jpg" alt="" aria-hidden="true" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/19a98d77848ded3892352d0bab105ddf.jpg" alt="" aria-hidden="true" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/308a988e50278bb052adeae01333980a.jpg" alt="" aria-hidden="true" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/b3939a2d5b180bf04aeca10c24918f53.jpg" alt="" aria-hidden="true" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+<img src="images/a615914bc5edffeb9238cb7c23506569.jpg" alt="" aria-hidden="true" style="flex: 0 0 auto; width: clamp(170px, 26vw, 300px); aspect-ratio: 1 / 1; object-fit: cover; display: block">
+</div>
+</div>
+<p style="max-width: 1240px; margin: 6px auto 0; padding: 0 clamp(16px, 4vw, 40px); text-align: right; font-size: 12px; color: #5C5C5C">※写真はイメージです</p>
+</div>
+
+<!-- Concept (yellow over photo) -->
+<section id="concept" style="position: relative; overflow: hidden; background: {{accent}}; margin-top: clamp(48px, 7vw, 80px); border-top: 3px solid #111111; border-bottom: 3px solid #111111">
+<img src="images/645ef9c99617e055a170bd40ba5bfd94.jpg" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; opacity: 0.5">
+<div style="position: relative; max-width: 1240px; margin: 0 auto; padding: clamp(64px, 9vw, 120px) clamp(16px, 4vw, 40px); display: flex; justify-content: center">
+<div style="max-width: 760px; background: rgba(255,255,255,0.92); border: 3px solid #111111; box-shadow: 10px 10px 0 #111111; padding: clamp(28px, 5vw, 56px) clamp(20px, 5vw, 56px); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px">
+<p style="margin: 0; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(40px, 9vw, 64px); line-height: 1; letter-spacing: 0.04em; text-shadow: 4px 4px 0 {{accent}}">HOW TO PLAY</p>
+<h2 style="margin: 0; font-weight: 900; font-size: clamp(22px, 5.6vw, 36px); line-height: 1.5">車で巡り、謎を解き、<br>今夜の宿を勝ち取れ。</h2>
+<p style="margin: 0; font-size: 16px; font-weight: 500; color: #222222">ROUTE ENIGMAは、車と謎解きを組み合わせた宿泊争奪戦バトル。2〜3人1組のチーム、全30組が同時にスタートし、謎を解き終えた先着順で今夜泊まる宿のランクが決まります。</p>
+</div>
+</div>
+</section>
+
+<!-- Steps on map -->
+<section style="position: relative; overflow: hidden; background: #EDEDED; border-bottom: 3px solid #111111">
+<svg aria-hidden="true" viewBox="0 0 1440 760" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%">
+<g fill="#E2E2E2"><rect x="60" y="60" width="260" height="170"></rect><rect x="420" y="40" width="300" height="140"></rect><rect x="860" y="70" width="220" height="210"></rect><rect x="1180" y="40" width="240" height="160"></rect><rect x="80" y="420" width="220" height="250"></rect><rect x="980" y="440" width="320" height="220"></rect></g>
+<g fill="none" stroke="#FFFFFF" stroke-width="22"><path d="M0 330 C 300 300, 520 380, 820 330 S 1200 280, 1440 320"></path><path d="M370 0 V760"></path><path d="M790 0 C 760 260, 840 500, 800 760"></path><path d="M1130 0 V760"></path><path d="M0 700 H1440"></path></g>
+<g fill="none" stroke="#FFFFFF" stroke-width="9"><path d="M0 190 H1440"></path><path d="M0 560 H1440"></path><path d="M560 0 V760"></path><path d="M1320 0 V760"></path><path d="M180 0 V760"></path></g>
+<path d="M1500 180 C 1300 140, 1200 260, 1040 300" fill="none" stroke="#CFE3F2" stroke-width="40"></path>
+</svg>
+<div style="position: relative; max-width: 1240px; margin: 0 auto; padding: clamp(56px, 8vw, 96px) clamp(16px, 4vw, 40px); display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px">
+<div style="background: #FFFFFF; border: 3px solid #111111; padding: 26px 24px 28px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: baseline; gap: 12px"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 48px; line-height: 1; color: {{accent}}; -webkit-text-stroke: 2px #111111">01.</span><h3 style="margin: 0; font-size: 21px; font-weight: 900">出題場所に集合</h3></div>
+<svg viewBox="0 0 240 130" style="width: 100%; height: auto; display: block" aria-hidden="true">
+<rect x="0" y="0" width="240" height="130" fill="#F7F7F7"></rect>
+<path d="M20 112 H220" stroke="#111111" stroke-width="2.5"></path>
+<rect x="38" y="44" width="56" height="56" fill="#FFFFFF" stroke="#111111" stroke-width="3"></rect>
+<text x="66" y="86" text-anchor="middle" font-family="'Big Shoulders Display', sans-serif" font-weight="900" font-size="40" fill="#111111">P</text>
+<path d="M66 100 V112" stroke="#111111" stroke-width="3"></path>
+<path d="M150 104 C 150 104, 122 72, 122 54 a28 28 0 0 1 56 0 C 178 72, 150 104, 150 104 Z" fill="{{accent}}" stroke="#111111" stroke-width="3"></path>
+<circle cx="150" cy="54" r="10" fill="#FFFFFF" stroke="#111111" stroke-width="3"></circle>
+<circle cx="200" cy="36" r="18" fill="#FFFFFF" stroke="#111111" stroke-width="3"></circle>
+<path d="M200 26 V36 L207 41" stroke="#111111" stroke-width="3" fill="none" stroke-linecap="round"></path>
+</svg>
+<p style="margin: 0; font-size: 15px; color: #222222">15:45までに、事前にご案内する出題場所へ。<br>最初の謎の指示に従い行動した後、<br>LINEを使って次の謎に挑み続けます。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; padding: 26px 24px 28px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: baseline; gap: 12px"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 48px; line-height: 1; color: {{accent}}; -webkit-text-stroke: 2px #111111">02.</span><h3 style="margin: 0; font-size: 21px; font-weight: 900">車で謎を追う</h3></div>
+<svg viewBox="0 0 240 130" style="width: 100%; height: auto; display: block" aria-hidden="true">
+<rect x="0" y="0" width="240" height="130" fill="#F7F7F7"></rect>
+<path d="M10 112 H230" stroke="#111111" stroke-width="2.5"></path>
+<path d="M20 112 H6 M40 120 H28" stroke="#111111" stroke-width="2.5" stroke-linecap="round"></path>
+<path d="M44 98 V80 L66 56 H134 L160 80 H186 a10 10 0 0 1 10 10 V98 Z" fill="{{accent}}" stroke="#111111" stroke-width="3" stroke-linejoin="round"></path>
+<path d="M74 62 H104 V80 H58 Z M110 62 H130 L148 80 H110 Z" fill="#FFFFFF" stroke="#111111" stroke-width="2.5" stroke-linejoin="round"></path>
+<circle cx="78" cy="100" r="13" fill="#FFFFFF" stroke="#111111" stroke-width="3"></circle>
+<circle cx="164" cy="100" r="13" fill="#FFFFFF" stroke="#111111" stroke-width="3"></circle>
+<path d="M150 14 H210 a6 6 0 0 1 6 6 V44 a6 6 0 0 1 -6 6 H176 L166 60 V50 H150 a6 6 0 0 1 -6 -6 V20 a6 6 0 0 1 6 -6 Z" fill="#FFFFFF" stroke="#111111" stroke-width="3" stroke-linejoin="round"></path>
+<text x="180" y="44" text-anchor="middle" font-family="'Big Shoulders Display', sans-serif" font-weight="900" font-size="30" fill="#111111">?</text>
+</svg>
+<p style="margin: 0; font-size: 15px; color: #222222">謎が示す場所へ、チームの車で移動。行き先を読み解きながら、次々と謎を解き進めていきます。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; padding: 26px 24px 28px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: baseline; gap: 12px"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 48px; line-height: 1; color: {{accent}}; -webkit-text-stroke: 2px #111111">03.</span><h3 style="margin: 0; font-size: 21px; font-weight: 900">先着順で宿が決まる</h3></div>
+<svg viewBox="0 0 240 130" style="width: 100%; height: auto; display: block" aria-hidden="true">
+<rect x="0" y="0" width="240" height="130" fill="#F7F7F7"></rect>
+<path d="M20 112 H220" stroke="#111111" stroke-width="2.5"></path>
+<rect x="92" y="62" width="56" height="50" fill="{{accent}}" stroke="#111111" stroke-width="3"></rect>
+<rect x="40" y="80" width="52" height="32" fill="#FFFFFF" stroke="#111111" stroke-width="3"></rect>
+<rect x="148" y="90" width="52" height="22" fill="#FFFFFF" stroke="#111111" stroke-width="3"></rect>
+<text x="120" y="98" text-anchor="middle" font-family="'Big Shoulders Display', sans-serif" font-weight="900" font-size="28" fill="#111111">1</text>
+<text x="66" y="104" text-anchor="middle" font-family="'Big Shoulders Display', sans-serif" font-weight="900" font-size="20" fill="#111111">2</text>
+<text x="174" y="108" text-anchor="middle" font-family="'Big Shoulders Display', sans-serif" font-weight="900" font-size="16" fill="#111111">3</text>
+<g fill="none" stroke="#111111" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="112" cy="30" r="11"></circle><path d="M120 38 L136 54"></path><path d="M131 49 L136 44"></path><path d="M126 44 L130 40"></path></g>
+</svg>
+<p style="margin: 0; font-size: 15px; color: #222222">謎が解けた順に順位が確定。1位から30位まで、順位に応じた5ランクの宿泊先に泊まります。</p>
+</div>
+</div>
+</section>
+
+<!-- Ranking -->
+<section id="ranking" style="max-width: 1240px; margin: 0 auto; padding: clamp(64px, 9vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 40px">
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<span aria-hidden="true" style="position: absolute; left: 50%; top: -24px; transform: translateX(-50%) rotate(-6deg); font-family: 'Yellowtail', cursive; font-size: clamp(64px, 12vw, 120px); line-height: 1; white-space: nowrap; color: rgba(17,17,17,0.07)">Tonight's Stay</span>
+<p style="margin: 0; position: relative; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(44px, 10vw, 72px); line-height: 1; letter-spacing: 0.04em; text-shadow: 4px 4px 0 {{accent}}">RANKING</p>
+<h2 style="margin: 0; position: relative; font-weight: 900; font-size: clamp(22px, 5.6vw, 36px); line-height: 1.5">今夜の宿は、解いた順。</h2>
+<p style="margin: 0; position: relative; max-width: 680px; font-size: 16px; color: #222222">用意された宿泊先は5種類。順位によって泊まる宿が決まり、28位以下のチームは最低級宿に泊まらなければなりません。</p>
+</div>
+<div class="rank-marquee" style="overflow: hidden; margin: 0 calc(-1 * clamp(16px, 4vw, 40px)); padding: 4px 0 14px">
+<div class="rank-track" style="display: flex; width: max-content">
+<ol style="list-style: none; margin: 0; padding: 0; display: flex">
+<li style="background: #FFFFFF; border: 3px solid #111111; box-shadow: 7px 7px 0 #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: {{accent}}; border-bottom: 3px solid #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" role="img" aria-label="最高級宿のイメージ：星の付いた高層ホテル">
+<polygon points="66,4 68.5,10 75,10 70,14 72,20 66,16.5 60,20 62,14 57,10 63.5,10" fill="#111111"></polygon>
+<rect x="24" y="44" width="20" height="40" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="88" y="44" width="20" height="40" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="44" y="24" width="44" height="60" fill="#111111"></rect>
+<g fill="#FFFFFF"><rect x="50" y="30" width="6" height="5"></rect><rect x="63" y="30" width="6" height="5"></rect><rect x="76" y="30" width="6" height="5"></rect><rect x="50" y="40" width="6" height="5"></rect><rect x="63" y="40" width="6" height="5"></rect><rect x="76" y="40" width="6" height="5"></rect><rect x="50" y="50" width="6" height="5"></rect><rect x="63" y="50" width="6" height="5"></rect><rect x="76" y="50" width="6" height="5"></rect><rect x="50" y="60" width="6" height="5"></rect><rect x="76" y="60" width="6" height="5"></rect></g>
+<path d="M56 84 V72 a10 10 0 0 1 20 0 V84" fill="#FFFFFF"></path>
+<g fill="#111111"><rect x="29" y="52" width="4" height="4"></rect><rect x="36" y="52" width="4" height="4"></rect><rect x="29" y="62" width="4" height="4"></rect><rect x="93" y="52" width="4" height="4"></rect><rect x="100" y="52" width="4" height="4"></rect><rect x="100" y="62" width="4" height="4"></rect></g>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">1-5</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">最高級宿</div>
+<div style="font-size: 14px; color: #444444">5チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px" aria-label="グレード 5段階中5"><sc-for list="{{tiers.t1}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+<li style="background: #FFFFFF; border: 3px solid #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: #FFF6B0; border-bottom: 3px solid #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" role="img" aria-label="やや高級宿のイメージ：瓦屋根とのれんの旅館">
+<path d="M14 84 V60 M8 66 Q14 52 20 66 M6 74 Q14 58 22 74" stroke="#111111" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+<polygon points="42,22 102,22 116,34 28,34" fill="#111111"></polygon>
+<rect x="36" y="34" width="72" height="14" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<g fill="{{accent}}" stroke="#111111" stroke-width="1"><rect x="44" y="38" width="10" height="6"></rect><rect x="60" y="38" width="10" height="6"></rect><rect x="76" y="38" width="10" height="6"></rect><rect x="92" y="38" width="10" height="6"></rect></g>
+<polygon points="30,48 114,48 124,60 20,60" fill="#111111"></polygon>
+<rect x="28" y="60" width="88" height="25" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="62" y="62" width="20" height="12" fill="#111111"></rect>
+<path d="M72 62 V74" stroke="#FFFFFF" stroke-width="1.5"></path>
+<circle cx="50" cy="70" r="4" fill="{{accent}}" stroke="#111111" stroke-width="1.5"></circle><circle cx="94" cy="70" r="4" fill="{{accent}}" stroke="#111111" stroke-width="1.5"></circle>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">6-13</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">やや高級宿</div>
+<div style="font-size: 14px; color: #444444">8チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px" aria-label="グレード 5段階中4"><sc-for list="{{tiers.t2}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+<li style="background: #FFFFFF; border: 3px solid #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: #F4F4F4; border-bottom: 3px solid #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" role="img" aria-label="普通宿のイメージ：四角いビジネスホテル">
+<rect x="38" y="20" width="56" height="65" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="38" y="20" width="56" height="7" fill="#111111"></rect>
+<g fill="#D4D4D4" stroke="#111111" stroke-width="1"><rect x="44" y="32" width="8" height="6"></rect><rect x="56" y="32" width="8" height="6"></rect><rect x="68" y="32" width="8" height="6"></rect><rect x="80" y="32" width="8" height="6"></rect><rect x="44" y="43" width="8" height="6"></rect><rect x="68" y="43" width="8" height="6"></rect><rect x="80" y="43" width="8" height="6"></rect><rect x="44" y="54" width="8" height="6"></rect><rect x="56" y="54" width="8" height="6"></rect><rect x="68" y="54" width="8" height="6"></rect><rect x="80" y="54" width="8" height="6"></rect></g>
+<rect x="56" y="43" width="8" height="6" fill="{{accent}}" stroke="#111111" stroke-width="1"></rect>
+<rect x="58" y="68" width="16" height="17" fill="#111111"></rect>
+<rect x="100" y="56" width="10" height="29" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"></rect>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">14-22</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">普通宿</div>
+<div style="font-size: 14px; color: #444444">9チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px" aria-label="グレード 5段階中3"><sc-for list="{{tiers.t3}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+<li style="background: #FFFFFF; border: 3px solid #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: #E8E8E8; border-bottom: 3px solid #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" role="img" aria-label="やや低級宿のイメージ：外階段のある古い2階建ての宿">
+<rect x="30" y="40" width="64" height="45" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="26" y="36" width="72" height="5" fill="#111111"></rect>
+<path d="M30 62 H94" stroke="#111111" stroke-width="1.5"></path>
+<g fill="#D4D4D4" stroke="#111111" stroke-width="1"><rect x="38" y="46" width="12" height="10"></rect><rect x="38" y="68" width="12" height="10"></rect></g>
+<rect x="58" y="46" width="12" height="10" fill="{{accent}}" stroke="#111111" stroke-width="1"></rect>
+<rect x="76" y="66" width="10" height="19" fill="#777777" stroke="#111111" stroke-width="1"></rect>
+<path d="M94 85 L110 62 H94" stroke="#111111" stroke-width="2" fill="none"></path>
+<path d="M97 80 h5 M101 74 h5 M105 68 h5" stroke="#111111" stroke-width="1.5"></path>
+<rect x="78" y="44" width="10" height="7" fill="#FFFFFF" stroke="#111111" stroke-width="1"></rect>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">23-27</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">やや低級宿</div>
+<div style="font-size: 14px; color: #444444">5チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px" aria-label="グレード 5段階中2"><sc-for list="{{tiers.t4}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+<li style="background: #FFFFFF; border: 3px dashed #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: #D9D9D9; border-bottom: 3px dashed #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" role="img" aria-label="最低級宿のイメージ：傾いた屋根に裸電球の小さな小屋">
+<polygon points="40,52 92,46 70,28" fill="#777777" stroke="#111111" stroke-width="1.5"></polygon>
+<rect x="44" y="50" width="44" height="35" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="50" y="56" width="10" height="9" fill="#D4D4D4" stroke="#111111" stroke-width="1"></rect>
+<path d="M51 57 L59 64 M59 57 L51 64" stroke="#111111" stroke-width="1"></path>
+<rect x="68" y="62" width="12" height="23" fill="#777777" stroke="#111111" stroke-width="1"></rect>
+<line x1="74" y1="50" x2="74" y2="55" stroke="#111111" stroke-width="1"></line>
+<circle cx="74" cy="57" r="2.5" fill="{{accent}}" stroke="#111111" stroke-width="1"></circle>
+<path d="M30 85 l3 -8 l2 8 M96 85 l2 -7 l3 7 M104 85 l2 -5 l2 5" stroke="#111111" stroke-width="1.5" fill="none"></path>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">28-30</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">最低級宿</div>
+<div style="font-size: 14px; color: #444444">3チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px" aria-label="グレード 5段階中1"><sc-for list="{{tiers.t5}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+</ol>
+<ol aria-hidden="true" style="list-style: none; margin: 0; padding: 0; display: flex">
+<li style="background: #FFFFFF; border: 3px solid #111111; box-shadow: 7px 7px 0 #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: {{accent}}; border-bottom: 3px solid #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" aria-hidden="true">
+<polygon points="66,4 68.5,10 75,10 70,14 72,20 66,16.5 60,20 62,14 57,10 63.5,10" fill="#111111"></polygon>
+<rect x="24" y="44" width="20" height="40" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="88" y="44" width="20" height="40" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="44" y="24" width="44" height="60" fill="#111111"></rect>
+<g fill="#FFFFFF"><rect x="50" y="30" width="6" height="5"></rect><rect x="63" y="30" width="6" height="5"></rect><rect x="76" y="30" width="6" height="5"></rect><rect x="50" y="40" width="6" height="5"></rect><rect x="63" y="40" width="6" height="5"></rect><rect x="76" y="40" width="6" height="5"></rect><rect x="50" y="50" width="6" height="5"></rect><rect x="63" y="50" width="6" height="5"></rect><rect x="76" y="50" width="6" height="5"></rect><rect x="50" y="60" width="6" height="5"></rect><rect x="76" y="60" width="6" height="5"></rect></g>
+<path d="M56 84 V72 a10 10 0 0 1 20 0 V84" fill="#FFFFFF"></path>
+<g fill="#111111"><rect x="29" y="52" width="4" height="4"></rect><rect x="36" y="52" width="4" height="4"></rect><rect x="29" y="62" width="4" height="4"></rect><rect x="93" y="52" width="4" height="4"></rect><rect x="100" y="52" width="4" height="4"></rect><rect x="100" y="62" width="4" height="4"></rect></g>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">1-5</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">最高級宿</div>
+<div style="font-size: 14px; color: #444444">5チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px"><sc-for list="{{tiers.t1}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+<li style="background: #FFFFFF; border: 3px solid #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: #FFF6B0; border-bottom: 3px solid #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" aria-hidden="true">
+<path d="M14 84 V60 M8 66 Q14 52 20 66 M6 74 Q14 58 22 74" stroke="#111111" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+<polygon points="42,22 102,22 116,34 28,34" fill="#111111"></polygon>
+<rect x="36" y="34" width="72" height="14" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<g fill="{{accent}}" stroke="#111111" stroke-width="1"><rect x="44" y="38" width="10" height="6"></rect><rect x="60" y="38" width="10" height="6"></rect><rect x="76" y="38" width="10" height="6"></rect><rect x="92" y="38" width="10" height="6"></rect></g>
+<polygon points="30,48 114,48 124,60 20,60" fill="#111111"></polygon>
+<rect x="28" y="60" width="88" height="25" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="62" y="62" width="20" height="12" fill="#111111"></rect>
+<path d="M72 62 V74" stroke="#FFFFFF" stroke-width="1.5"></path>
+<circle cx="50" cy="70" r="4" fill="{{accent}}" stroke="#111111" stroke-width="1.5"></circle><circle cx="94" cy="70" r="4" fill="{{accent}}" stroke="#111111" stroke-width="1.5"></circle>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">6-13</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">やや高級宿</div>
+<div style="font-size: 14px; color: #444444">8チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px"><sc-for list="{{tiers.t2}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+<li style="background: #FFFFFF; border: 3px solid #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: #F4F4F4; border-bottom: 3px solid #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" aria-hidden="true">
+<rect x="38" y="20" width="56" height="65" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="38" y="20" width="56" height="7" fill="#111111"></rect>
+<g fill="#D4D4D4" stroke="#111111" stroke-width="1"><rect x="44" y="32" width="8" height="6"></rect><rect x="56" y="32" width="8" height="6"></rect><rect x="68" y="32" width="8" height="6"></rect><rect x="80" y="32" width="8" height="6"></rect><rect x="44" y="43" width="8" height="6"></rect><rect x="68" y="43" width="8" height="6"></rect><rect x="80" y="43" width="8" height="6"></rect><rect x="44" y="54" width="8" height="6"></rect><rect x="56" y="54" width="8" height="6"></rect><rect x="68" y="54" width="8" height="6"></rect><rect x="80" y="54" width="8" height="6"></rect></g>
+<rect x="56" y="43" width="8" height="6" fill="{{accent}}" stroke="#111111" stroke-width="1"></rect>
+<rect x="58" y="68" width="16" height="17" fill="#111111"></rect>
+<rect x="100" y="56" width="10" height="29" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"></rect>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">14-22</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">普通宿</div>
+<div style="font-size: 14px; color: #444444">9チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px"><sc-for list="{{tiers.t3}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+<li style="background: #FFFFFF; border: 3px solid #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: #E8E8E8; border-bottom: 3px solid #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" aria-hidden="true">
+<rect x="30" y="40" width="64" height="45" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="26" y="36" width="72" height="5" fill="#111111"></rect>
+<path d="M30 62 H94" stroke="#111111" stroke-width="1.5"></path>
+<g fill="#D4D4D4" stroke="#111111" stroke-width="1"><rect x="38" y="46" width="12" height="10"></rect><rect x="38" y="68" width="12" height="10"></rect></g>
+<rect x="58" y="46" width="12" height="10" fill="{{accent}}" stroke="#111111" stroke-width="1"></rect>
+<rect x="76" y="66" width="10" height="19" fill="#777777" stroke="#111111" stroke-width="1"></rect>
+<path d="M94 85 L110 62 H94" stroke="#111111" stroke-width="2" fill="none"></path>
+<path d="M97 80 h5 M101 74 h5 M105 68 h5" stroke="#111111" stroke-width="1.5"></path>
+<rect x="78" y="44" width="10" height="7" fill="#FFFFFF" stroke="#111111" stroke-width="1"></rect>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">23-27</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">やや低級宿</div>
+<div style="font-size: 14px; color: #444444">5チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px"><sc-for list="{{tiers.t4}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+<li style="background: #FFFFFF; border: 3px dashed #111111; display: flex; flex-direction: column; flex: 0 0 auto; width: clamp(210px, 62vw, 240px); margin-right: 18px">
+<div style="background: #D9D9D9; border-bottom: 3px dashed #111111; padding: 12px">
+<svg viewBox="0 0 132 96" style="width: 100%; height: auto; display: block" aria-hidden="true">
+<polygon points="40,52 92,46 70,28" fill="#777777" stroke="#111111" stroke-width="1.5"></polygon>
+<rect x="44" y="50" width="44" height="35" fill="#FFFFFF" stroke="#111111" stroke-width="2"></rect>
+<rect x="50" y="56" width="10" height="9" fill="#D4D4D4" stroke="#111111" stroke-width="1"></rect>
+<path d="M51 57 L59 64 M59 57 L51 64" stroke="#111111" stroke-width="1"></path>
+<rect x="68" y="62" width="12" height="23" fill="#777777" stroke="#111111" stroke-width="1"></rect>
+<line x1="74" y1="50" x2="74" y2="55" stroke="#111111" stroke-width="1"></line>
+<circle cx="74" cy="57" r="2.5" fill="{{accent}}" stroke="#111111" stroke-width="1"></circle>
+<path d="M30 85 l3 -8 l2 8 M96 85 l2 -7 l3 7 M104 85 l2 -5 l2 5" stroke="#111111" stroke-width="1.5" fill="none"></path>
+<line x1="0" y1="85" x2="132" y2="85" stroke="#111111" stroke-width="2"></line>
+</svg>
+</div>
+<div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; align-items: baseline; gap: 4px; white-space: nowrap"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 46px; line-height: 1">28-30</span><span style="font-size: 15px; font-weight: 900">位</span></div>
+<div style="font-weight: 900; font-size: 22px; line-height: 1.4">最低級宿</div>
+<div style="font-size: 14px; color: #444444">3チーム</div>
+<div style="display: flex; gap: 4px; margin-top: 6px"><sc-for list="{{tiers.t5}}" as="k" hint-placeholder-count="5"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{k}}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></sc-for></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<p style="margin: 0; font-size: 13px; color: #444444; text-align: center">※ 順位は謎が解けた先着順で決定します。</p>
+</section>
+
+<!-- Event detail -->
+<section id="detail" style="background: {{accent}}; border-top: 3px solid #111111; border-bottom: 3px solid #111111">
+<div style="max-width: 1240px; margin: 0 auto; padding: clamp(64px, 9vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; gap: 44px">
+<div style="position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
+<span aria-hidden="true" style="position: absolute; left: 50%; top: -24px; transform: translateX(-50%) rotate(-6deg); font-family: 'Yellowtail', cursive; font-size: clamp(64px, 12vw, 120px); line-height: 1; white-space: nowrap; color: rgba(17,17,17,0.09)">Event Detail</span>
+<p style="margin: 0; position: relative; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(44px, 10vw, 72px); line-height: 1; letter-spacing: 0.04em; text-shadow: 4px 4px 0 #FFFFFF">EVENT DETAIL</p>
+<h2 style="margin: 0; position: relative; font-weight: 900; font-size: clamp(22px, 5.6vw, 36px); line-height: 1.5">イベント詳細</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 22px">
+<div style="background: #FFFFFF; border: 3px solid #111111; box-shadow: 6px 6px 0 #111111; padding: 26px 26px; display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-start; font-size: 13px; font-weight: 900; background: #111111; color: {{accent}}; padding: 2px 10px">体験時間</div>
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(34px, 10vw, 46px); line-height: 1.1; white-space: nowrap">15:45 – 23:00</div>
+<p style="margin: 0; font-size: 14px; color: #222222; padding-top: 12px; border-top: 2px dashed #111111">※15:45を過ぎて事前の出題場所に到着されていない場合、本イベントを最大限にお楽しみいただけない可能性が非常に高くなります。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; box-shadow: 6px 6px 0 #111111; padding: 26px 26px; display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-start; font-size: 13px; font-weight: 900; background: #111111; color: {{accent}}; padding: 2px 10px">周遊エリア</div>
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(34px, 10vw, 46px); line-height: 1.1; white-space: nowrap"><span style="font-family: 'Zen Kaku Gothic New', sans-serif; font-size: clamp(26px, 7.5vw, 34px); margin-right: 4px">東京</span>23<span style="font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 20px; margin-left: 6px">区</span></div>
+<p style="margin: 0; font-size: 14px; color: #222222; padding-top: 12px; border-top: 2px dashed #111111">謎が示す目的地を、チームの車で東京23区内を巡りながら解き進めます。宿泊先の旅館／ホテルもすべて23区内にあります。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; box-shadow: 6px 6px 0 #111111; padding: 26px 26px; display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-start; font-size: 13px; font-weight: 900; background: #111111; color: {{accent}}; padding: 2px 10px">参加人数</div>
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(34px, 10vw, 46px); line-height: 1.1; white-space: nowrap">2–3<span style="font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 20px; margin-left: 6px">名</span></div>
+<p style="margin: 0; font-size: 14px; color: #222222; padding-top: 12px; border-top: 2px dashed #111111">1チームにつき最大3名で挑戦していただけます。各日同時に複数のチームが参加します（全30組）。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; box-shadow: 6px 6px 0 #111111; padding: 26px 26px; display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-start; font-size: 13px; font-weight: 900; background: #111111; color: {{accent}}; padding: 2px 10px">参加条件</div>
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(34px, 10vw, 46px); line-height: 1.1; white-space: nowrap">18<span style="font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 20px; margin-left: 6px">歳以上</span></div>
+<p style="margin: 0; font-size: 14px; color: #222222; padding-top: 12px; border-top: 2px dashed #111111">宿泊や車の運転が伴うため、18歳未満の方はご参加できません。</p>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px">
+<h3 style="margin: 0; font-size: 22px; font-weight: 900; text-align: center">必要なもの／推奨環境</h3>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px">
+<div style="background: #FFFFFF; border: 3px solid #111111; padding: 22px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<div style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"></rect><path d="M10.5 18.5h3"></path></svg></div>
+<div style="font-weight: 900; font-size: 16px">スマートフォン</div>
+<p style="margin: 0; font-size: 14px; color: #222222; text-align: left">インターネットに接続できる端末が必要です。フィーチャーフォン（ガラケー）、PCには対応しておりません。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; padding: 22px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<div style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path><path d="M8 10h8"></path></svg></div>
+<div style="font-weight: 900; font-size: 16px">LINEアプリ</div>
+<p style="margin: 0; font-size: 14px; color: #222222; text-align: left">本イベントはスマートフォンアプリ「LINE」を使用します。ダウンロード方法は<a href="https://line.me/ja/download" style="text-decoration: underline; font-weight: 700">こちら</a>をご参照ください。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; padding: 22px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<div style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"></path></svg></div>
+<div style="font-weight: 900; font-size: 16px">通話機能</div>
+<p style="margin: 0; font-size: 14px; color: #222222; text-align: left">本イベントは「通話機能」を使用いたします。通話料はお客様のご負担となります。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; padding: 22px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<div style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="7" width="17" height="10" rx="2"></rect><path d="M22 10.5v3"></path><path d="M6 10v4"></path><path d="M9.5 10v4"></path></svg></div>
+<div style="font-weight: 900; font-size: 16px">十分なバッテリー</div>
+<p style="margin: 0; font-size: 14px; color: #222222; text-align: left">WEB／アプリを使用するため、バッテリーは十分余裕を持ってご参加ください。通信費はお客様のご負担となります。</p>
+</div>
+<div style="background: #FFFFFF; border: 3px solid #111111; padding: 22px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px">
+<div style="width: 64px; height: 64px; border-radius: 50%; border: 3px solid #111111; background: {{accent}}; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3"></path><rect x="3" y="14" width="4" height="6" rx="1.5"></rect><rect x="17" y="14" width="4" height="6" rx="1.5"></rect></svg></div>
+<div style="font-weight: 900; font-size: 16px">イヤホン（推奨）</div>
+<p style="margin: 0; font-size: 14px; color: #222222; text-align: left">動画や音声をご視聴いただくため、イヤホンのご持参を推奨いたします。</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Notice -->
+<section id="notice" style="max-width: 1240px; margin: 0 auto; padding: clamp(64px, 9vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; gap: 40px 64px">
+<div style="flex: 1 1 260px; position: relative; display: flex; flex-direction: column; gap: 12px">
+<span aria-hidden="true" style="position: absolute; left: -8px; top: -30px; transform: rotate(-6deg); font-family: 'Yellowtail', cursive; font-size: 96px; line-height: 1; white-space: nowrap; color: rgba(17,17,17,0.07)">Notice</span>
+<p style="margin: 0; position: relative; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(44px, 10vw, 64px); line-height: 1; letter-spacing: 0.04em; text-shadow: 4px 4px 0 {{accent}}">NOTICE</p>
+<h2 style="margin: 0; position: relative; font-weight: 900; font-size: clamp(22px, 5.6vw, 34px); line-height: 1.5">注意事項</h2>
+<p style="margin: 0; position: relative; color: #444444; font-size: 14px">ご参加前に必ずお読みください。</p>
+</div>
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; border-top: 3px solid #111111">
+<details style="border-bottom: 2px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">イベントについて<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">本イベントは2～3人で挑戦していただく宿泊先を賭けた謎解きゲームです。各日同時に複数のチームが参加します。<br>行動する際は、チーム全員で行動いただきますようお願いいたします。</p>
+</details>
+<details style="border-bottom: 2px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">宿泊先について<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">旅館／ホテルは東京23区内に限定しております。<br>また、5種類の宿泊場所についてはイベント当日にお伝えさせていただきます。</p>
+</details>
+<details style="border-bottom: 2px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">最初の謎について<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">最初の謎には、正誤判定のみとなりヒントサイトがございません。<br>そのため、謎の答えが分からない場合は株式会社Yodasouのお問い合わせメール（<a href="mailto:nazo-info@via.tokyo.jp" style="text-decoration: underline; font-weight: 700">nazo-info@via.tokyo.jp</a>）までご連絡お願いいたします。</p>
+</details>
+<details style="border-bottom: 2px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">お子様／未就学児のご参加について<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">宿泊や車の運転が伴うため、18歳未満の方はご参加できません。謎解きの難易度から、このイベントへの推奨参加年齢は18歳以上となります。</p>
+</details>
+<details style="border-bottom: 2px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">外国語の対応について<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">本イベントは日本語のみの対応です。外国語の対応はございません。<br>（This event is only available in Japanese.）</p>
+</details>
+<details style="border-bottom: 2px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">服装について<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">ご参加時の服装の指定はございません。</p>
+</details>
+<details style="border-bottom: 2px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">撮影／録音／ネタバレについて<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">イベントの感想や謎解きに関わらない写真の投稿は大歓迎ですが、これからお楽しみいただくお客様のために、イベントの内容や配布物の詳細をブログやSNSなど、インターネット上に公開することは固くお断りいたします。</p>
+</details>
+<details style="border-bottom: 2px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">禁止事項<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">営利目的の転売は禁止しております。また、イベント内での配布物の譲渡や転売は、いかなる場合にも固くお断りいたします。</p>
+</details>
+<details style="border-bottom: 3px solid #111111">
+<summary style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 4px; min-height: 44px; font-weight: 900; font-size: 17px">免責事項<span class="chev" style="width: 30px; height: 30px; border-radius: 50%; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></span></summary>
+<p style="margin: 0; padding: 0 4px 22px; color: #222222; font-size: 15px">イベントの中止に伴う、会場までの旅費等（キャンセル料）の保障は一切いたしかねます。</p>
+</details>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background: #F2F2F2; border-top: 3px solid #111111; border-bottom: 3px solid #111111">
+<div style="max-width: 1240px; margin: 0 auto; padding: clamp(64px, 9vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; gap: 40px 64px">
+<div style="flex: 1 1 260px; position: relative; display: flex; flex-direction: column; gap: 12px">
+<span aria-hidden="true" style="position: absolute; left: -8px; top: -30px; transform: rotate(-6deg); font-family: 'Yellowtail', cursive; font-size: 96px; line-height: 1; white-space: nowrap; color: rgba(17,17,17,0.07)">Q&amp;A</span>
+<p style="margin: 0; position: relative; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(44px, 10vw, 64px); line-height: 1; letter-spacing: 0.04em; text-shadow: 4px 4px 0 {{accent}}">FAQ</p>
+<h2 style="margin: 0; position: relative; font-weight: 900; font-size: clamp(22px, 5.6vw, 34px); line-height: 1.5">よくある質問</h2>
+</div>
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+<details style="background: #FFFFFF; border: 2px solid #111111; padding: 0 20px" open="">
+<summary style="display: flex; align-items: center; gap: 14px; padding: 16px 0; min-height: 44px; font-weight: 900; font-size: 17px"><span style="flex: 0 0 auto; width: 36px; height: 36px; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; line-height: 1">Q</span><span style="flex: 1 1 auto">体験時間は何時までですか？</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p style="margin: 0; padding: 0 0 20px 50px; color: #222222; font-size: 15px">体験時間は15:45〜23:00までとなります。</p>
+</details>
+<details style="background: #FFFFFF; border: 2px solid #111111; padding: 0 20px">
+<summary style="display: flex; align-items: center; gap: 14px; padding: 16px 0; min-height: 44px; font-weight: 900; font-size: 17px"><span style="flex: 0 0 auto; width: 36px; height: 36px; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; line-height: 1">Q</span><span style="flex: 1 1 auto">イベントの参加費はいくらですか？</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p style="margin: 0; padding: 0 0 20px 50px; color: #222222; font-size: 15px">参加費は<strong style="color: #111111; background: {{accent}}; padding: 0 4px">1チーム 29,800円（税込）</strong>です。2名・3名どちらでご参加いただいても同じ料金となります。</p>
+</details>
+<details style="background: #FFFFFF; border: 2px solid #111111; padding: 0 20px">
+<summary style="display: flex; align-items: center; gap: 14px; padding: 16px 0; min-height: 44px; font-weight: 900; font-size: 17px"><span style="flex: 0 0 auto; width: 36px; height: 36px; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; line-height: 1">Q</span><span style="flex: 1 1 auto">参加費とは別に宿泊費は必要ですか？</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p style="margin: 0; padding: 0 0 20px 50px; color: #222222; font-size: 15px">いいえ、宿泊費は不要です。宿泊費は参加費に含まれており、お支払いは参加費のみとなりますのでご安心ください。</p>
+</details>
+<details style="background: #FFFFFF; border: 2px solid #111111; padding: 0 20px">
+<summary style="display: flex; align-items: center; gap: 14px; padding: 16px 0; min-height: 44px; font-weight: 900; font-size: 17px"><span style="flex: 0 0 auto; width: 36px; height: 36px; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; line-height: 1">Q</span><span style="flex: 1 1 auto">一人でも参加できますか？</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p style="margin: 0; padding: 0 0 20px 50px; color: #222222; font-size: 15px">本イベントは2～3名となりますため、お一人での参加はできかねます。</p>
+</details>
+<details style="background: #FFFFFF; border: 2px solid #111111; padding: 0 20px">
+<summary style="display: flex; align-items: center; gap: 14px; padding: 16px 0; min-height: 44px; font-weight: 900; font-size: 17px"><span style="flex: 0 0 auto; width: 36px; height: 36px; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; line-height: 1">Q</span><span style="flex: 1 1 auto">謎解き初心者でも楽しめますか？</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p style="margin: 0; padding: 0 0 20px 50px; color: #222222; font-size: 15px">もちろんお楽しみいただけます！解けなくてお困りの方にはヒントサイトをご用意しておりますので、ご安心ください。</p>
+</details>
+<details style="background: #FFFFFF; border: 2px solid #111111; padding: 0 20px">
+<summary style="display: flex; align-items: center; gap: 14px; padding: 16px 0; min-height: 44px; font-weight: 900; font-size: 17px"><span style="flex: 0 0 auto; width: 36px; height: 36px; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; line-height: 1">Q</span><span style="flex: 1 1 auto">最初の謎の答えが分からない場合はどうすればいいですか？</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p style="margin: 0; padding: 0 0 20px 50px; color: #222222; font-size: 15px">最初の謎には、正誤判定のみでヒントサイトはございません。答えが分からない場合は、株式会社Yodasouのお問い合わせメール（<a href="mailto:nazo-info@via.tokyo.jp" style="text-decoration: underline; font-weight: 700">nazo-info@via.tokyo.jp</a>）までお気軽にご連絡ください。</p>
+</details>
+<details style="background: #FFFFFF; border: 2px solid #111111; padding: 0 20px">
+<summary style="display: flex; align-items: center; gap: 14px; padding: 16px 0; min-height: 44px; font-weight: 900; font-size: 17px"><span style="flex: 0 0 auto; width: 36px; height: 36px; background: {{accent}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; line-height: 1">Q</span><span style="flex: 1 1 auto">体験するために必要なものはありますか？</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p style="margin: 0; padding: 0 0 20px 50px; color: #222222; font-size: 15px">LINEアプリが使用できるスマートフォン等の端末をご準備ください。また、イヤホンのご持参を推奨いたします。</p>
+</details>
+</div>
+</div>
+</section>
+
+<!-- Contact -->
+<section id="contact" style="max-width: 1240px; margin: 0 auto; padding: clamp(64px, 9vw, 112px) clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; gap: 40px 64px">
+<div style="flex: 1 1 260px; position: relative; display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0; position: relative; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(44px, 10vw, 64px); line-height: 1; letter-spacing: 0.04em; text-shadow: 4px 4px 0 {{accent}}">CONTACT</p>
+<h2 style="margin: 0; font-weight: 900; font-size: clamp(22px, 5.6vw, 34px); line-height: 1.5">お問い合わせ</h2>
+</div>
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<div style="background: #FFFFFF; border: 3px solid #111111; box-shadow: 6px 6px 0 #111111; padding: clamp(22px, 4vw, 32px); display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 900; color: #444444">主催・運営</span>
+<a href="https://nazo-yodasou.github.io/yodasou-corporate-site/" target="_blank" rel="noopener" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; font-size: 18px; font-weight: 900; color: #111111; text-decoration: underline; text-decoration-color: {{accent}}; text-decoration-thickness: 4px; text-underline-offset: 4px">株式会社Yodasou<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="新しいタブで開く" role="img"><path d="M14 4h6v6"></path><path d="M20 4 11 13"></path><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg></a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 900; color: #444444">メールアドレス</span>
+<a href="mailto:nazo-info@via.tokyo.jp" style="display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; max-width: 100%; box-sizing: border-box; min-height: 52px; padding: 0 20px; border: 2px solid #111111; box-shadow: 4px 4px 0 #111111; background: {{accent}}; color: #111111; text-decoration: none; font-size: clamp(15px, 4.2vw, 18px); font-weight: 900; overflow-wrap: anywhere"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>nazo-info@via.tokyo.jp</a>
+</div>
+</div>
+<ul style="margin: 0; padding: 0 0 0 1.2em; display: flex; flex-direction: column; gap: 6px; color: #222222; font-size: 14px">
+<li>イベント内容に関するご質問や、最初の謎の答えが分からない場合は、上記メールアドレスまでご連絡ください。</li>
+<li>お問い合わせの際は、件名に「ROUTE ENIGMA」とご参加日をご記載いただくとスムーズです。</li>
+<li>内容によっては、ご返信までお時間をいただく場合がございます。</li>
+</ul>
+</div>
+</section>
+
+<!-- Entry CTA -->
+<section id="entry" style="background: {{accent}}; border-top: 3px solid #111111">
+<div style="max-width: 1240px; margin: 0 auto; padding: clamp(72px, 10vw, 128px) clamp(16px, 4vw, 40px); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px">
+<div style="width: 84px; height: 84px; border-radius: 50%; background: #111111; display: flex; align-items: center; justify-content: center"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="{{accent}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg></div>
+<h2 style="margin: 0; font-weight: 900; font-size: clamp(21px, 6vw, 46px); line-height: 1.5">夜明けの最高を手にするのは、<br>30組のうち、わずか5組。</h2>
+<p style="margin: 0; font-size: 16px; font-weight: 700; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 12px"><span style="white-space: nowrap; background: #111111; color: {{accent}}; padding: 4px 14px">開催日：11/16,17,24,30</span><span style="white-space: nowrap; background: #111111; color: {{accent}}; padding: 4px 14px">参加費：29,800円</span></p>
+<sc-if value="{{cd.locked}}" hint-placeholder-val="{{ true }}">
+<div role="timer" aria-label="最初の謎の公開までのカウントダウン" style="width: 100%; max-width: 720px; box-sizing: border-box; margin-top: 8px; display: flex; flex-direction: column; align-items: center; gap: clamp(18px, 4vw, 28px); padding: clamp(28px, 6vw, 56px) clamp(16px, 4vw, 40px); background: #FFFFFF; border: 3px solid #111111; box-shadow: 8px 8px 0 #111111">
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 18px; line-height: 1; letter-spacing: 0.32em">ENIGMA</span>
+<p style="margin: 0; font-weight: 900; font-size: clamp(19px, 5vw, 28px); line-height: 1.5">最初の謎の公開まで</p>
+<div style="width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(6px, 2vw, 16px)">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: clamp(12px, 3vw, 20px) 4px; background: #FFFFFF; border: 2px solid #111111"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(32px, 10vw, 64px); line-height: 1; font-variant-numeric: tabular-nums">{{cd.days}}</span><span style="font-size: clamp(11px, 3vw, 13px); color: #444444">日</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: clamp(12px, 3vw, 20px) 4px; background: #FFFFFF; border: 2px solid #111111"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(32px, 10vw, 64px); line-height: 1; font-variant-numeric: tabular-nums">{{cd.hours}}</span><span style="font-size: clamp(11px, 3vw, 13px); color: #444444">時間</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: clamp(12px, 3vw, 20px) 4px; background: #FFFFFF; border: 2px solid #111111"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(32px, 10vw, 64px); line-height: 1; font-variant-numeric: tabular-nums">{{cd.minutes}}</span><span style="font-size: clamp(11px, 3vw, 13px); color: #444444">分</span></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 6px; padding: clamp(12px, 3vw, 20px) 4px; background: {{accent}}; border: 2px solid #111111"><span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(32px, 10vw, 64px); line-height: 1; font-variant-numeric: tabular-nums">{{cd.seconds}}</span><span style="font-size: clamp(11px, 3vw, 13px); color: #222222">秒</span></div>
+</div>
+<p style="margin: 0; font-size: clamp(13px, 3.6vw, 15px); color: #222222">{{cd.label}} に、ここに最初の謎が現れます。</p>
+</div>
+</sc-if>
+<sc-if value="{{cd.open}}" hint-placeholder-val="{{ false }}">
+<div aria-roledescription="カルーセル" aria-label="謎解き問題" style="width: 100%; max-width: 720px; display: flex; flex-direction: column; gap: 18px; margin-top: 8px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 34px">
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 18px; line-height: 1; letter-spacing: 0.32em">ENIGMA</span>
+<sc-if value="{{pz.onPuzzle}}" hint-placeholder-val="{{ true }}">
+<span aria-live="polite" style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; line-height: 1; letter-spacing: 0.06em; white-space: nowrap; background: #111111; color: {{accent}}; padding: 6px 12px">{{pz.current}} / {{pz.total}}</span>
+</sc-if>
+<sc-if value="{{pz.onPlace}}" hint-placeholder-val="{{ false }}">
+<span aria-live="polite" style="font-weight: 900; font-size: 16px; line-height: 1; white-space: nowrap; background: #111111; color: {{accent}}; padding: 8px 12px">謎の場所</span>
+</sc-if>
+</div>
+<div class="pz-track" ref="{{pz.trackRef}}" onScroll="{{pz.onScroll}}" onTouchStart="{{pz.onTouchStart}}" onTouchEnd="{{pz.onTouchEnd}}" tabindex="0" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; border: 3px solid #111111; box-shadow: 8px 8px 0 #111111; background: #FFFFFF">
+<div aria-label="謎の場所" style="flex: 0 0 100%; scroll-snap-align: start; box-sizing: border-box; padding: clamp(16px, 3vw, 28px); display: flex; flex-direction: column; gap: 14px; text-align: left">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 30px">
+<div style="font-weight: 900; font-size: 24px; line-height: 1">謎の場所</div>
+<span style="font-size: 13px; font-weight: 900; white-space: nowrap">解読 <span style="background: {{accent}}; padding: 0 6px">{{pz.solvedCount}}</span> / {{pz.total}}</span>
+</div>
+<div style="width: 100%; aspect-ratio: 4 / 3; flex: 0 0 auto; box-sizing: border-box; border: 2px dashed #111111; background: #F7F7F7; padding: clamp(12px, 3vw, 28px) clamp(10px, 2vw, 24px); display: flex; flex-direction: column; justify-content: center; gap: clamp(6px, 1.4vw, 10px)">
+<p style="margin: 0 0 clamp(4px, 1vw, 10px); font-size: clamp(11px, 3.2vw, 13px); line-height: 1.6; text-align: center; color: #444444">問題に正解すると、その問題番号のマスに文字が現れます。</p>
+<sc-for list="{{pz.placeRows}}" as="row" hint-placeholder-count="4">
+<div style="display: flex; justify-content: center; gap: 4px">
+<sc-for list="{{row.cells}}" as="c" hint-placeholder-count="8">
+<div aria-label="{{c.aria}}" style="flex: 0 0 calc((100% - 40px) / 11); aspect-ratio: 1 / 1; box-sizing: border-box; display: flex; align-items: center; justify-content: center; line-height: 1; border: 2px solid {{c.border}}; background: {{c.bg}}; color: {{c.color}}; font-family: {{c.font}}; font-size: {{c.size}}; font-weight: 900">{{c.text}}</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{pz.allSolved}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 15px; font-weight: 900; color: #0F6A3D">すべての文字がそろいました！</p>
+</sc-if>
+<sc-if value="{{pz.showStep1}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="box-sizing: border-box; border: 3px solid #111111; background: {{accent}}; padding: clamp(16px, 3vw, 22px); display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-start; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; background: #111111; color: {{accent}}; padding: 4px 10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg>次の行動</div>
+<p style="margin: 0; font-size: clamp(15px, 4.2vw, 18px); font-weight: 900; line-height: 1.8">15時40分までに、「三井のリパーク 東京ドームホテル駐車場」へ車でお越しください。</p>
+<p style="margin: 0; font-size: clamp(14px, 3.9vw, 16px); line-height: 1.8">駐車場に車を停めてお待ちいただき、15時45分になりましたら、下の「謎の場所 の答え」に<strong>「スタート」</strong>と入力して送信してください。</p>
+</div>
+</sc-if>
+<sc-if value="{{pz.showStep2}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="box-sizing: border-box; border: 3px solid #111111; background: {{accent}}; padding: clamp(16px, 3vw, 22px); display: flex; flex-direction: column; gap: 10px">
+<div style="align-self: flex-start; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; background: #111111; color: {{accent}}; padding: 4px 10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg>次の行動</div>
+<p style="margin: 0; font-size: clamp(15px, 4.2vw, 18px); font-weight: 900; line-height: 1.8">15時50分になりましたら、お手荷物（宿泊用のお荷物を含む）をすべてお持ちのうえ、チーム全員で東京ドームホテルの受付へお越しください。</p>
+<p style="margin: 0; font-size: clamp(14px, 3.9vw, 16px); line-height: 1.8">受付では、チームリーダーのお名前をお伝えください。</p>
+</div>
+</sc-if>
+</div>
+<sc-for list="{{pz.items}}" as="q" hint-placeholder-count="1">
+<div aria-label="{{q.label}}" style="flex: 0 0 100%; scroll-snap-align: start; box-sizing: border-box; padding: clamp(16px, 3vw, 28px); display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 30px">
+<div style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 30px; line-height: 1; text-align: left">{{q.no}}</div>
+<sc-if value="{{q.solved}}" hint-placeholder-val="{{ false }}">
+<span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 900; color: {{accent}}; background: #111111; padding: 4px 12px; white-space: nowrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg>正解済み</span>
+</sc-if>
+</div>
+<sc-if value="{{q.isMs}}" hint-placeholder-val="{{ false }}">
+<div style="width: 100%; aspect-ratio: 4 / 3; box-sizing: border-box; border: 2px solid #111111; background: {{accent}}; padding: clamp(8px, 2.2vw, 18px); display: flex; align-items: stretch; gap: clamp(6px, 1.8vw, 14px)">
+<div role="group" aria-label="マインスイーパー 9×9マス・地雷10個" style="height: 100%; aspect-ratio: 1 / 1; flex: 0 0 auto; box-sizing: border-box; background: #111111; border: 2px solid #111111; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); grid-template-rows: repeat(9, minmax(0, 1fr)); gap: 2px; touch-action: manipulation">
+<sc-for list="{{pz.ms.cells}}" as="c" hint-placeholder-count="81">
+<button type="button" aria-label="{{c.aria}}" onClick="{{c.open}}" onContextMenu="{{c.flag}}" disabled="{{c.locked}}" style="min-width: 0; min-height: 0; margin: 0; padding: 0; border: 0; border-radius: 0; background: {{c.bg}}; color: {{c.color}}; font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(11px, 3vw, 22px); line-height: 1; display: flex; align-items: center; justify-content: center; cursor: {{c.cursor}}">{{c.text}}<sc-if value="{{c.showMine}}" hint-placeholder-val="{{ false }}"><svg width="62%" height="62%" viewBox="0 0 24 24" fill="none" stroke="{{c.mineInk}}" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="5.5" fill="{{c.mineInk}}"></circle><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"></path></svg></sc-if><sc-if value="{{c.showFlag}}" hint-placeholder-val="{{ false }}"><svg width="60%" height="60%" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3"></path><path d="M6 4h11l-3 4 3 4H6" fill="#C0281D"></path></svg></sc-if></button>
+</sc-for>
+</div>
+<div style="flex: 1 1 auto; min-width: 0; box-sizing: border-box; background: #FFFFFF; border: 2px solid #111111; padding: clamp(6px, 1.6vw, 14px); display: flex; flex-direction: column; justify-content: space-between; gap: 6px; text-align: left">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(10px, 2.2vw, 14px); line-height: 1; letter-spacing: 0.12em">MINES</span>
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(22px, 6vw, 44px); line-height: 1; font-variant-numeric: tabular-nums">{{pz.ms.left}}</span>
+</div>
+<p aria-live="polite" style="margin: 0; font-size: clamp(10px, 2.4vw, 14px); font-weight: 900; line-height: 1.5; color: {{pz.ms.msgColor}}">{{pz.ms.message}}</p>
+<button type="button" aria-pressed="{{pz.ms.flagMode}}" onClick="{{pz.ms.toggleFlag}}" style="width: 100%; min-height: 44px; box-sizing: border-box; padding: 0 4px; font-family: inherit; font-size: clamp(11px, 2.4vw, 14px); font-weight: 900; color: {{pz.ms.modeInk}}; background: {{pz.ms.modeBg}}; border: 2px solid #111111; display: inline-flex; align-items: center; justify-content: center; gap: 4px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V3"></path><path d="M6 4h11l-3 4 3 4H6"></path></svg>{{pz.ms.modeLabel}}</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{q.hasImg}}" hint-placeholder-val="{{ false }}">
+<img src="{{q.img}}" alt="{{q.label}}" style="width: 100%; height: auto; object-fit: contain; display: block; border: 2px solid #111111; background: #FFFFFF">
+</sc-if>
+<sc-if value="{{q.noImg}}" hint-placeholder-val="{{ true }}">
+<div style="width: 100%; aspect-ratio: 4 / 3; box-sizing: border-box; border: 2px dashed #111111; background: #F7F7F7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #444444">
+<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#777777" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="m21 16-5-5-9 9"></path></svg>
+<span style="font-size: 14px">問題画像（{{q.no}}）をここに挿入</span>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{pz.onMs}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px; text-align: left; background: #FFFFFF; border: 3px solid #111111; padding: clamp(16px, 3vw, 24px)">
+<p style="margin: 0; font-size: 14px; font-weight: 900">Q.15 はマインスイーパー</p>
+<p style="margin: 0; font-size: 14px; color: #222222">地雷を避けて、すべてのマスを開ければ正解です。地雷を踏むと盤面がランダムに入れ替わります。旗はモード切替ボタン（PCは右クリック）で立てられます。</p>
+<sc-if value="{{pz.msSolved}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>正解！次の問題へ進みましょう。</p>
+</sc-if>
+<p style="margin: 0; font-size: 12px; color: #444444">正解数 <span style="font-weight: 900; color: #111111">{{pz.solvedCount}}</span> / {{pz.total}}</p>
+</div>
+</sc-if>
+<sc-if value="{{pz.showForm}}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{pz.submit}}" style="display: flex; flex-direction: column; gap: 10px; text-align: left; background: #FFFFFF; border: 3px solid #111111; padding: clamp(16px, 3vw, 24px)">
+<label for="pz-answer" style="font-size: 14px; font-weight: 900">{{pz.currentNo}} の答え</label>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<input id="pz-answer" type="text" value="{{pz.input}}" onChange="{{pz.onInput}}" placeholder="答えを入力" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex: 1 1 200px; min-width: 0; min-height: 52px; box-sizing: border-box; padding: 0 16px; font-size: 16px; font-family: inherit; color: #111111; background: #FFFFFF; border: 2px solid #111111">
+<button type="submit" style="flex: 0 0 auto; min-height: 52px; padding: 0 28px; font-size: 16px; font-weight: 900; font-family: inherit; color: {{accent}}; background: #111111; border: 2px solid #111111; cursor: pointer">答えを送信</button>
+</div>
+<div aria-live="polite" style="min-height: 24px">
+<sc-if value="{{pz.isCorrectQ}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>正解！次の問題へ進みましょう。</p>
+</sc-if>
+<sc-if value="{{pz.isCorrectPlace}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>正解！上に表示された「次の行動」に従ってください。</p>
+</sc-if>
+<sc-if value="{{pz.isStart}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>スタートを受け付けました。上に表示された「次の行動」に従ってください。</p>
+</sc-if>
+<sc-if value="{{pz.isWrong}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #C0281D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m9 9 6 6"></path><path d="m15 9-6 6"></path></svg>不正解…もう一度考えてみよう。</p>
+</sc-if>
+<sc-if value="{{pz.isEmpty}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14px; color: #444444">答えを入力してから送信してください。</p>
+</sc-if>
+<sc-if value="{{pz.isTooEarly}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #8A5A00"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>まだスタートできません。{{pz.startLabel}}になりましたら、もう一度「スタート」と送信してください。</p>
+</sc-if>
+</div>
+<p style="margin: 0; font-size: 12px; color: #444444">正解数 <span style="font-weight: 900; color: #111111">{{pz.solvedCount}}</span> / {{pz.total}}</p>
+</form>
+</sc-if>
+<div style="display: flex; align-items: center; gap: 14px">
+<button type="button" aria-label="前の問題" onClick="{{pz.prev}}" disabled="{{pz.atStart}}" style="flex: 0 0 auto; width: 52px; height: 52px; border: 2px solid #111111; background: #FFFFFF; color: #111111; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; opacity: {{pz.prevOpacity}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="m11 6-6 6 6 6"></path></svg></button>
+<div style="flex: 1 1 auto; height: 10px; background: #FFFFFF; border: 2px solid #111111; overflow: hidden"><div style="height: 100%; width: {{pz.progress}}; background: #111111; transition: width .3s ease"></div></div>
+<button type="button" aria-label="次の問題" onClick="{{pz.next}}" disabled="{{pz.atEnd}}" style="flex: 0 0 auto; width: 52px; height: 52px; border: 2px solid #111111; background: #111111; color: {{accent}}; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; opacity: {{pz.nextOpacity}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg></button>
+</div>
+<p style="margin: 0; font-size: 13px; color: #222222">横にスワイプ、または矢印ボタンで次の問題へ</p>
+</div>
+</sc-if>
+</div>
+</section>
+
+<footer style="background: #111111; color: #FFFFFF">
+<div style="max-width: 1240px; margin: 0 auto; padding: 36px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: 22px; letter-spacing: 0.06em; color: {{accent}}">ROUTE ENIGMA</span>
+<span style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; font-size: 13px; color: #CCCCCC"><span>主催：<a href="https://nazo-yodasou.github.io/yodasou-corporate-site/" target="_blank" rel="noopener" style="color: #FFFFFF; text-decoration: underline; text-underline-offset: 4px">株式会社Yodasou</a></span><span>© ROUTE ENIGMA 〜夜明けの鍵を奪い合え〜</span></span>
+</div>
+</footer>
+
+</div>
+</template>
+<noscript>このページを表示するには JavaScript を有効にしてください。</noscript>
+<script>
+// ClaudeデザインのDesign Component（.dc.html）をブラウザでそのまま描画する最小ランタイム。
+// 対応：{{穴}}・<sc-for>・<sc-if>・on〇〇イベント・ref・setState／componentDidMount
+(function () {
+  'use strict';
+
+  var EVENTS = {
+    onclick: 'click', onsubmit: 'submit', onchange: 'input', oninput: 'input',
+    onscroll: 'scroll', ontouchstart: 'touchstart', ontouchend: 'touchend',
+    onkeydown: 'keydown', onfocus: 'focus', onblur: 'blur', oncontextmenu: 'contextmenu'
+  };
+  var BOOL_ATTRS = { disabled: 1, checked: 1, hidden: 1, open: 1, selected: 1, readonly: 1, required: 1 };
+  var HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+  var ONLY_HOLE = /^\s*\{\{\s*([^}]+?)\s*\}\}\s*$/;
+
+  function lookup(scope, expr) {
+    if (expr === 'true') return true;
+    if (expr === 'false') return false;
+    if (expr === 'null') return null;
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return +expr;
+    var parts = expr.split('.');
+    var v = scope;
+    for (var i = 0; i < parts.length; i++) {
+      if (v == null) return undefined;
+      v = v[parts[i]];
+    }
+    return v;
+  }
+  function str(v) { return v == null || v === false ? '' : String(v); }
+  function interp(text, scope) { return text.replace(HOLE, function (_, e) { return str(lookup(scope, e)); }); }
+
+  // テンプレートのノードから、実データを入れた新しいノード列を作る
+  function build(node, scope, out) {
+    if (node.nodeType === 3) { out.push(document.createTextNode(interp(node.nodeValue, scope))); return; }
+    if (node.nodeType !== 1) return;
+    var tag = node.localName;
+    if (tag === 'sc-for') {
+      var list = lookup(scope, (node.getAttribute('list').match(ONLY_HOLE) || [])[1] || '') || [];
+      var as = node.getAttribute('as') || 'item';
+      for (var i = 0; i < list.length; i++) {
+        var s = Object.create(scope); s[as] = list[i];
+        buildChildren(node, s, out);
+      }
+      return;
+    }
+    if (tag === 'sc-if') {
+      var m = (node.getAttribute('value') || '').match(ONLY_HOLE);
+      if (m && lookup(scope, m[1])) buildChildren(node, scope, out);
+      return;
+    }
+    var el = node.namespaceURI === 'http://www.w3.org/1999/xhtml'
+      ? document.createElement(tag)
+      : document.createElementNS(node.namespaceURI, node.tagName);
+    var attrs = {}, on = {}, ref = null;
+    for (var a = 0; a < node.attributes.length; a++) {
+      var at = node.attributes[a], name = at.name, val = at.value, only = val.match(ONLY_HOLE);
+      if (name.indexOf('hint-') === 0) continue;
+      if (EVENTS[name]) { if (only) on[EVENTS[name]] = lookup(scope, only[1]); continue; }
+      if (name === 'ref') { if (only) ref = lookup(scope, only[1]); continue; }
+      if (only && BOOL_ATTRS[name]) { if (lookup(scope, only[1])) attrs[name] = ''; continue; }
+      attrs[name] = interp(val, scope);
+    }
+    el.__attrs = attrs; el.__on = on; el.__ref = ref;
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    var kids = [];
+    buildChildren(node, scope, kids);
+    for (var j = 0; j < kids.length; j++) el.appendChild(kids[j]);
+    out.push(el);
+  }
+  function buildChildren(node, scope, out) {
+    var src = node.content || node;
+    for (var c = src.firstChild; c; c = c.nextSibling) build(c, scope, out);
+  }
+
+  // 既存のDOMを新しい内容に合わせて最小限だけ書き換える（スクロール位置や入力中の文字を保つ）
+  function wire(el) {
+    el.__bound = el.__bound || {};
+    for (var type in el.__on) {
+      if (el.__bound[type]) continue;
+      el.__bound[type] = true;
+      (function (t) {
+        el.addEventListener(t, function (e) { var f = el.__on && el.__on[t]; if (typeof f === 'function') f(e); },
+          t === 'touchstart' || t === 'touchend' || t === 'scroll' ? { passive: true } : false);
+      })(type);
+    }
+  }
+  function patchEl(oldEl, newEl) {
+    var prev = oldEl.__attrs || {}, next = newEl.__attrs;
+    // 前回描画した値と比べて変わった属性だけ更新（開いた<details>や一時的なstyle操作を上書きしない）
+    for (var k in prev) if (!(k in next)) oldEl.removeAttribute(k);
+    for (k in next) if (prev[k] !== next[k]) oldEl.setAttribute(k, next[k]);
+    if (oldEl.localName === 'input' && 'value' in next && oldEl.value !== next.value) oldEl.value = next.value;
+    if (oldEl.localName === 'button' || oldEl.localName === 'input') oldEl.disabled = 'disabled' in next;
+    oldEl.__attrs = next; oldEl.__on = newEl.__on; oldEl.__ref = newEl.__ref;
+    wire(oldEl);
+    patchChildren(oldEl, Array.prototype.slice.call(newEl.childNodes));
+  }
+  function same(a, b) {
+    return a.nodeType === b.nodeType && (a.nodeType !== 1 || (a.namespaceURI === b.namespaceURI && a.localName === b.localName));
+  }
+  function patchChildren(parent, kids) {
+    var i = 0, cur = parent.firstChild;
+    for (; i < kids.length; i++) {
+      var n = kids[i];
+      if (cur && same(cur, n)) {
+        if (n.nodeType === 3) { if (cur.nodeValue !== n.nodeValue) cur.nodeValue = n.nodeValue; }
+        else patchEl(cur, n);
+        cur = cur.nextSibling;
+      } else {
+        parent.insertBefore(n, cur);
+        if (n.nodeType === 1) wireTree(n);
+      }
+    }
+    while (cur) { var nx = cur.nextSibling; parent.removeChild(cur); cur = nx; }
+  }
+  function wireTree(el) {
+    if (el.__on) wire(el);
+    if (el.localName === 'input' && el.__attrs && 'value' in el.__attrs) el.value = el.__attrs.value;
+    for (var c = el.firstElementChild; c; c = c.nextElementSibling) wireTree(c);
+  }
+  function callRefs(el) {
+    if (typeof el.__ref === 'function') el.__ref(el);
+    for (var c = el.firstElementChild; c; c = c.nextElementSibling) callRefs(c);
+  }
+
+  function DCLogic(props) { this.props = props || {}; this.state = {}; }
+  DCLogic.prototype.setState = function (patch) {
+    var self = this;
+    if (typeof patch === 'function') patch = patch(this.state, this.props);
+    this.state = Object.assign({}, this.state, patch);
+    if (!this.__queued) {
+      this.__queued = true;
+      Promise.resolve().then(function () { self.__queued = false; self.__render(); });
+    }
+  };
+  window.DCLogic = DCLogic;
+
+  window.dcMount = function (Component, tpl, root, props) {
+    var comp = new Component(props);
+    comp.__render = function () {
+      var vals = comp.renderVals ? comp.renderVals() : {};
+      var out = [];
+      buildChildren(tpl, vals, out);
+      patchChildren(root, out);
+      callRefs(root);
+    };
+    comp.__render();
+    if (comp.componentDidMount) comp.componentDidMount();
+    return comp;
+  };
+})();
+
+</script>
+<script>
+class Component extends DCLogic {
+  componentDidMount() {
+    this.cdTimer = setInterval(() => this.setState({ cdNow: Date.now() }), 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.cdTimer);
+    clearTimeout(this.pzScrollTimer);
+    clearTimeout(this.msTimer);
+  }
+  // ===== マインスイーパー（Q.15） =====
+  // 盤面サイズと地雷数
+  msSize() { return { rows: 9, cols: 9, mines: 10 }; }
+  msFresh(failed) { return { mines: null, rev: {}, flag: {}, status: 'ready', hit: -1, failed: failed || 0 }; }
+  msNeighbors(i) {
+    const { rows, cols } = this.msSize();
+    const r = Math.floor(i / cols), c = i % cols, out = [];
+    for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+      if (!dr && !dc) continue;
+      const rr = r + dr, cc = c + dc;
+      if (rr >= 0 && rr < rows && cc >= 0 && cc < cols) out.push(rr * cols + cc);
+    }
+    return out;
+  }
+  // 最初に開いたマスとその周囲には地雷を置かず、ランダムに配置
+  msGenerate(safe) {
+    const { rows, cols, mines } = this.msSize();
+    const banned = new Set([safe].concat(this.msNeighbors(safe)));
+    const pool = [];
+    for (let i = 0; i < rows * cols; i++) if (!banned.has(i)) pool.push(i);
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+    }
+    const m = {};
+    pool.slice(0, mines).forEach((i) => { m[i] = true; });
+    return m;
+  }
+  msCount(mines, i) { return this.msNeighbors(i).filter((n) => mines[n]).length; }
+  msOpen(i, qIndex) {
+    const s = this.state || {};
+    const m = s.ms || this.msFresh(0);
+    if (m.status === 'lost' || m.status === 'won') return;
+    if (s.msFlagMode) { this.msFlag(i); return; }
+    if (m.flag[i] || m.rev[i]) return;
+    const mines = m.mines || this.msGenerate(i);
+    if (mines[i]) {
+      // 失敗：地雷を見せたあと、新しいランダム盤面に入れ替える
+      this.setState({ ms: Object.assign({}, m, { mines, status: 'lost', hit: i }) });
+      clearTimeout(this.msTimer);
+      this.msTimer = setTimeout(() => this.setState({ ms: this.msFresh(m.failed + 1) }), 1600);
+      return;
+    }
+    const rev = Object.assign({}, m.rev);
+    const stack = [i];
+    while (stack.length) {
+      const k = stack.pop();
+      if (rev[k] || m.flag[k]) continue;
+      rev[k] = true;
+      if (this.msCount(mines, k) === 0) this.msNeighbors(k).forEach((n) => { if (!rev[n] && !mines[n]) stack.push(n); });
+    }
+    const { rows, cols, mines: total } = this.msSize();
+    const won = Object.keys(rev).length >= rows * cols - total;
+    const next = { ms: Object.assign({}, m, { mines, rev, status: won ? 'won' : 'playing' }) };
+    if (won) {
+      next.pzSolved = Object.assign({}, s.pzSolved, { [qIndex]: true });
+      next.pzResults = Object.assign({}, s.pzResults, { [qIndex]: 'correct' });
+    }
+    this.setState(next);
+  }
+  msFlag(i) {
+    const s = this.state || {};
+    const m = s.ms || this.msFresh(0);
+    if (m.status === 'lost' || m.status === 'won' || m.rev[i]) return;
+    const flag = Object.assign({}, m.flag);
+    if (flag[i]) delete flag[i]; else flag[i] = true;
+    this.setState({ ms: Object.assign({}, m, { flag }) });
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#FFE100';
+    const keys = (on) => [0, 1, 2, 3, 4].map((i) => (i < on ? '#111111' : '#D4D4D4'));
+    // 謎解き問題の画像URL（Q.01〜Q.31の順）。空欄の問題はプレースホルダーが表示されます。
+    const PUZZLE_IMAGES = [
+      'images/48b87c775afeb75322dc3c57d84cb576.jpg', // Q.01
+      'images/36f74d67114b4b8b962725eb89ba0905.jpg', // Q.02
+      'images/d3da20907185da879ba80690f37ebad7.jpg', // Q.03
+      'images/c634cd1cbbfbc952383b4e3047699301.jpg', // Q.04
+      'images/d2dbd5997798123d8d7959b6f636606f.jpg', // Q.05
+      'images/d3a23ac58df0a370cb299df30e7efd16.jpg', // Q.06
+      'images/660cf3ccb5c06b64e27838015b063431.jpg', // Q.07
+      'images/ff00ed0b1a968a1e9c2d8b41cf9a38f2.jpg', // Q.08
+      'images/1c3e962b9220032dc48882f39798e118.jpg', // Q.09
+      'images/c4a069bacff09f217740c7128c4c144e.jpg', // Q.10
+      'images/38cf0d1daccc5b699e54886c3c48bb6e.jpg', // Q.11
+      'images/8c6c77388d24b48eaa01bfaacdee97be.jpg', // Q.12
+      'images/8ec4650339d049f4baeb09b885816962.jpg', // Q.13
+      'images/cdd83b927789321f7f5ea983ca19b947.jpg', // Q.14
+      'images/586fc106aa50b84114ad2ff96e23d057.jpg', // Q.15
+      'images/6233561ec79d64bbf8e9fa1fe694a964.jpg', // Q.16
+      'images/a630c784bf3216eadfc59b41348b2372.jpg', // Q.17
+      'images/cd030c922d5d0f52977a1c40082fc56c.jpg', // Q.18
+      'images/4fb94d8c56fa040be53c94ba3464eadf.jpg', // Q.19
+      'images/b3e0496c2399c11d2b0ba10a8e0b3a7e.jpg', // Q.20
+      'images/a423097ac223b495a34888316f3b622e.jpg', // Q.21
+      'images/cd9e9aedc73de72ec5a1942ba9c23e3f.jpg', // Q.22
+      'images/4c97c6a7a9087753fd28bd5c059a6ac6.jpg', // Q.23
+      'images/d804b94d2ac3e9003fa763d837499885.jpg', // Q.24
+      'images/7baa7fdfdfbe11dea3e44f677e3236e4.jpg', // Q.25
+      'images/239d2a163da3d5d0c542aa08c2cfe498.jpg', // Q.26
+      'images/440884085c39df6f16190ff4ee098ac4.jpg', // Q.27
+      'images/268f5f3d7bd4bd67ceef87e4f2aa14d2.jpg', // Q.28
+      'images/8944c21b0019d68ab260a9d700d05dc9.jpg', // Q.29
+      'images/6601fee9fc2fb5ce79f57c0eec6fd525.jpg', // Q.30
+      'images/db24b3f68419207f41647a466a9d4a17.jpg'  // Q.31
+    ];
+    // 各問題の正解（Q.01〜Q.31の順）。別解がある場合は ['かぎ', 'キー'] のように配列で複数指定できます。
+    // 判定時は全角/半角・ひらがな/カタカナ・大文字/小文字・空白の違いを無視します。
+    const PUZZLE_ANSWERS = [
+      'めとろ',           // Q.01
+      'めぐり',           // Q.02
+      'りんねてんしょう', // Q.03
+      'はだぎ',           // Q.04
+      'ないす',           // Q.05
+      'ついん',           // Q.06
+      'かんせい',         // Q.07
+      'のうか',           // Q.08
+      'となり',           // Q.09
+      'ぷーる',           // Q.10
+      'ふぉーす',         // Q.11
+      'こまく',           // Q.12
+      '時計',             // Q.13
+      'Low',              // Q.14
+      '結果的',           // Q.15
+      'いぬ',             // Q.16
+      '自由',             // Q.17
+      'しつげん',         // Q.18
+      'けーき',           // Q.19
+      'らて',             // Q.20
+      'いんく',           // Q.21
+      'ツチフマズ',       // Q.22
+      'くるみ',           // Q.23
+      'りさいくる',       // Q.24
+      'ゆ',               // Q.25
+      'ひこう',           // Q.26
+      'しさつ',           // Q.27
+      '約束',             // Q.28
+      'すうじ',           // Q.29
+      'けいさんき',       // Q.30
+      'きゅうきゅうしゃ'  // Q.31
+    ];
+    // 「謎の場所」に表示する文字。行ごとに区切っています（合計31文字）。
+    // n文字目は Q.n に正解したときに表示されます。
+    const PLACE_ROWS = ['こたえは', 'みついのりぱーく', 'とうきょうどーむほてる', 'ちゅうしゃじょう'];
+    // 「謎の場所」の正解（複数指定可）。
+    const PLACE_ANSWERS = ['みついのりぱーくとうきょうどーむほてるちゅうしゃじょう', '三井のリパーク東京ドームホテル駐車場'];
+    // 謎の場所に正解した後、15:45に入力してもらう合言葉
+    const START_WORDS = ['スタート'];
+    // 「スタート」を受け付け始める日時（日本時間）。テスト中：2026年10月11日 1:15。
+    const START_AT = new Date('2026-10-11T01:15:00+09:00').getTime();
+    const START_LABEL = '10月11日 1時15分';
+    const total = PUZZLE_IMAGES.length;
+    const slideCount = total + 1;
+    const st = this.state || {};
+    // スライド位置 → 問題番号（0枚目＝謎の場所、1枚目以降＝Q.01〜）
+    const toQ = (p) => (p === 0 ? total : p - 1);
+    const pos = st.pzIndex || 0;
+    const idx = toQ(pos);
+    const inputs = st.pzInputs || {};
+    const results = st.pzResults || {};
+    const solved = st.pzSolved || {};
+    const pad = (n) => (n < 10 ? '0' + n : '' + n);
+    const norm = (s) => String(s || '')
+      .normalize('NFKC')
+      .toLowerCase()
+      .replace(/[\s　]/g, '')
+      .replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60));
+    // マインスイーパーに置き換える問題（0始まり：14 = Q.15）。クリアすると正解扱いになります。
+    const MS_Q = 14;
+    const items = PUZZLE_IMAGES.map((img, i) => ({
+      no: 'Q.' + pad(i + 1),
+      label: '問題 ' + (i + 1) + ' / ' + total,
+      img,
+      hasImg: !!img && i !== MS_Q,
+      noImg: !img && i !== MS_Q,
+      isMs: i === MS_Q,
+      solved: !!solved[i]
+    }));
+    const msSt = st.ms || this.msFresh(0);
+    const msDim = this.msSize();
+    const NUM_INK = ['', '#1F4FD1', '#0F6A3D', '#C0281D', '#3A1F8C', '#8A2B0B', '#0E6E6E', '#111111', '#555555'];
+    const msOver = msSt.status === 'lost' || msSt.status === 'won';
+    const msCells = [];
+    for (let i = 0; i < msDim.rows * msDim.cols; i++) {
+      const isRev = !!msSt.rev[i];
+      const isMine = !!(msSt.mines && msSt.mines[i]);
+      const showMine = msSt.status === 'lost' && isMine;
+      const isHit = i === msSt.hit && msSt.status === 'lost';
+      const n = isRev && msSt.mines ? this.msCount(msSt.mines, i) : 0;
+      const isFlag = !isRev && !!msSt.flag[i] && !showMine;
+      const pos = (Math.floor(i / msDim.cols) + 1) + '行' + (i % msDim.cols + 1) + '列';
+      msCells.push({
+        text: isRev && n > 0 ? String(n) : '',
+        color: NUM_INK[n] || '#111111',
+        bg: isHit ? '#C0281D' : (isRev ? '#E4E4E4' : (showMine ? '#BDBDBD' : '#FFFFFF')),
+        showMine,
+        mineInk: isHit ? '#FFFFFF' : '#111111',
+        showFlag: isFlag,
+        locked: msOver || isRev,
+        cursor: msOver || isRev ? 'default' : 'pointer',
+        aria: pos + '：' + (showMine ? '地雷' : isRev ? (n ? '周囲の地雷 ' + n : '空白') : isFlag ? '旗' : '未開封'),
+        open: () => this.msOpen(i, MS_Q),
+        flag: (e) => { if (e && e.preventDefault) e.preventDefault(); this.msFlag(i); }
+      });
+    }
+    const msFlags = Object.keys(msSt.flag).length;
+    const msMessage = msSt.status === 'won' ? 'クリア！Q.15 正解'
+      : msSt.status === 'lost' ? '地雷！盤面を入れ替えます…'
+      : msSt.status === 'playing' ? '地雷を避けて全マスを開けろ'
+      : msSt.failed > 0 ? '盤面が入れ替わった。再挑戦！'
+      : 'マスをタップして開始';
+    const msFlagMode = !!st.msFlagMode;
+    const msView = {
+      cells: msCells,
+      left: Math.max(0, msDim.mines - msFlags),
+      message: msMessage,
+      msgColor: msSt.status === 'won' ? '#0F6A3D' : msSt.status === 'lost' ? '#C0281D' : '#111111',
+      flagMode: msFlagMode ? 'true' : 'false',
+      modeLabel: msFlagMode ? '旗モード中' : '旗を立てる',
+      modeBg: msFlagMode ? '#111111' : '#FFFFFF',
+      modeInk: msFlagMode ? accent : '#111111',
+      toggleFlag: () => this.setState({ msFlagMode: !(this.state && this.state.msFlagMode) })
+    };
+    let qn = 0;
+    const placeRows = PLACE_ROWS.map((line) => ({
+      cells: Array.from(line).map((ch) => {
+        const i = qn++;
+        const open = !!solved[i];
+        return {
+          text: open ? ch : pad(i + 1),
+          aria: open ? ch : 'Q.' + pad(i + 1) + ' 未解読',
+          border: open ? '#111111' : '#CFCFCF',
+          bg: open ? accent : 'transparent',
+          color: open ? '#111111' : '#6B6B6B',
+          font: open ? "'Zen Kaku Gothic New', sans-serif" : "'Big Shoulders Display', sans-serif",
+          size: open ? 'clamp(11px, 3.8vw, 22px)' : 'clamp(9px, 2.6vw, 13px)'
+        };
+      })
+    }));
+    const onPlace = idx >= total;
+    const result = results[idx] || '';
+    const submit = (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      const cur = toQ((this.state && this.state.pzIndex) || 0);
+      const s = this.state || {};
+      const val = (s.pzInputs || {})[cur] || '';
+      const placeDone = cur >= total && s.pzSolved && s.pzSolved[total];
+      let r;
+      if (!norm(val)) r = 'empty';
+      else if (placeDone) {
+        // 謎の場所に正解した後は「スタート」の入力を受け付ける
+        const isStartWord = START_WORDS.map(norm).indexOf(norm(val)) !== -1;
+        r = !isStartWord ? 'wrong' : (Date.now() < START_AT ? 'early' : 'start');
+      } else {
+        const key = cur >= total ? PLACE_ANSWERS : PUZZLE_ANSWERS[cur];
+        const ans = [].concat(key || []).map(norm).filter(Boolean);
+        r = ans.indexOf(norm(val)) !== -1 ? 'correct' : 'wrong';
+      }
+      const next = { pzResults: Object.assign({}, s.pzResults, { [cur]: r }) };
+      if (r === 'correct') next.pzSolved = Object.assign({}, s.pzSolved, { [cur]: true });
+      if (r === 'start') next.pzStarted = true;
+      if (r === 'correct' && cur >= total) next.pzInputs = Object.assign({}, s.pzInputs, { [cur]: '' });
+      this.setState(next);
+    };
+    const onInput = (e) => {
+      const cur = toQ((this.state && this.state.pzIndex) || 0);
+      const s = this.state || {};
+      const isSolved = !!(s.pzSolved && s.pzSolved[cur]);
+      const keep = cur >= total && s.pzStarted ? 'start' : (isSolved ? 'correct' : '');
+      this.setState({
+        pzInputs: Object.assign({}, s.pzInputs, { [cur]: e.target.value }),
+        pzResults: Object.assign({}, s.pzResults, { [cur]: keep })
+      });
+    };
+    // ループ移動：最後の次は最初へ、最初の前は最後へ。端をまたぐときは一瞬で切り替える。
+    const go = (i) => {
+      const t = this.track;
+      const cur = (this.state && this.state.pzIndex) || 0;
+      const n = ((i % slideCount) + slideCount) % slideCount;
+      if (t) {
+        if (Math.abs(n - cur) > 1) {
+          t.style.scrollBehavior = 'auto';
+          t.scrollLeft = n * t.clientWidth;
+          requestAnimationFrame(() => { t.style.scrollBehavior = ''; });
+        } else {
+          t.scrollTo({ left: n * t.clientWidth, behavior: 'smooth' });
+        }
+      }
+      this.setState({ pzIndex: n });
+    };
+    // 端でさらにスワイプしたときもループさせる
+    const onTouchStart = (e) => {
+      const p = e.touches && e.touches[0];
+      const t = this.track;
+      if (!p || !t) return;
+      this.pzTouch = { x: p.clientX, y: p.clientY, left: t.scrollLeft, max: t.scrollWidth - t.clientWidth };
+    };
+    const onTouchEnd = (e) => {
+      const s = this.pzTouch;
+      const p = e.changedTouches && e.changedTouches[0];
+      this.pzTouch = null;
+      if (!s || !p) return;
+      const dx = p.clientX - s.x;
+      const dy = p.clientY - s.y;
+      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+      if (dx < 0 && s.left >= s.max - 2) go(0);
+      else if (dx > 0 && s.left <= 2) go(slideCount - 1);
+    };
+    // 最初の謎の公開日時（日本時間）。テスト中：2026年10月11日 0:00。本番は '2026-11-14T00:00:00+09:00' / '11月14日 0:00' に戻す。
+    const REVEAL_AT = new Date('2026-10-11T00:00:00+09:00').getTime();
+    const REVEAL_LABEL = '10月11日 0:00';
+    const now = (this.state && this.state.cdNow) || Date.now();
+    const left = Math.max(0, REVEAL_AT - now);
+    const open = left <= 0 || !!this.props.previewPuzzles;
+    const two = (n) => (n < 10 ? '0' + n : '' + n);
+    const sec = Math.floor(left / 1000);
+    const cd = {
+      open,
+      locked: !open,
+      label: REVEAL_LABEL,
+      days: Math.floor(sec / 86400),
+      hours: two(Math.floor((sec % 86400) / 3600)),
+      minutes: two(Math.floor((sec % 3600) / 60)),
+      seconds: two(sec % 60)
+    };
+    return {
+      accent,
+      cd,
+      tiers: { t1: keys(5), t2: keys(4), t3: keys(3), t4: keys(2), t5: keys(1) },
+      pz: {
+        items,
+        ms: msView,
+        onMs: idx === MS_Q,
+        showForm: idx !== MS_Q,
+        msSolved: !!solved[MS_Q],
+        total,
+        current: idx + 1,
+        currentNo: onPlace ? '謎の場所' : 'Q.' + pad(idx + 1),
+        input: inputs[idx] || '',
+        onInput,
+        submit,
+        isCorrectQ: result === 'correct' && !onPlace,
+        isCorrectPlace: result === 'correct' && onPlace,
+        placeSolved: !!solved[total],
+        showStep1: !!solved[total] && !st.pzStarted,
+        showStep2: !!st.pzStarted,
+        isStart: result === 'start' && onPlace,
+        isWrong: result === 'wrong',
+        isEmpty: result === 'empty',
+        isTooEarly: result === 'early' && onPlace,
+        startLabel: START_LABEL,
+        solvedCount: Object.keys(solved).filter((k) => +k < total).length,
+        allSolved: Object.keys(solved).filter((k) => +k < total).length >= total,
+        placeRows,
+        onPlace,
+        onPuzzle: !onPlace,
+        progress: ((pos + 1) / slideCount * 100).toFixed(2) + '%',
+        atStart: false,
+        atEnd: false,
+        prevOpacity: 1,
+        nextOpacity: 1,
+        onTouchStart,
+        onTouchEnd,
+        trackRef: (el) => { this.track = el; },
+        onScroll: (e) => {
+          const t = e.currentTarget;
+          if (!t || !t.clientWidth) return;
+          // スクロールが止まってから現在の問題番号を確定し、移動中の表示のチラつきを防ぐ
+          clearTimeout(this.pzScrollTimer);
+          this.pzScrollTimer = setTimeout(() => {
+            const n = Math.round(t.scrollLeft / t.clientWidth);
+            if (n !== ((this.state && this.state.pzIndex) || 0)) this.setState({ pzIndex: n });
+          }, 120);
+        },
+        prev: () => go(pos - 1),
+        next: () => go(pos + 1)
+      }
+    };
+  }
+}
+dcMount(Component, document.getElementById('dc-tpl'), document.getElementById('dc-root'), {"accent": "#FFE100", "previewPuzzles": false});
+</script>
+</body>
+</html>
