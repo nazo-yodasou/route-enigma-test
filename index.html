@@ -698,7 +698,7 @@ section{scroll-margin-top:84px}
 <sc-if value="{{pz.onMs}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-direction: column; gap: 8px; text-align: left; background: #FFFFFF; border: 3px solid #111111; padding: clamp(16px, 3vw, 24px)">
 <p style="margin: 0; font-size: 14px; font-weight: 900">Q.15 はマインスイーパー</p>
-<p style="margin: 0; font-size: 14px; color: #222222">地雷を避けて、すべてのマスを開ければ正解です。地雷を踏むと盤面がランダムに入れ替わります。旗はモード切替ボタン（PCは右クリック）で立てられます。</p>
+<p style="margin: 0; font-size: 14px; color: #222222">地雷を避けて、すべてのマスを開ければ正解です。地雷を踏むと盤面がランダムに入れ替わります。旗はモード切替ボタンで立てられます。</p>
 <sc-if value="{{pz.msSolved}}" hint-placeholder-val="{{ false }}">
 <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>正解！次の問題へ進みましょう。</p>
 </sc-if>
@@ -984,7 +984,9 @@ class Component extends DCLogic {
     const m = s.ms || this.msFresh(0);
     if (m.status === 'lost' || m.status === 'won' || m.rev[i]) return;
     const flag = Object.assign({}, m.flag);
-    if (flag[i]) delete flag[i]; else flag[i] = true;
+    if (flag[i]) delete flag[i];
+    else if (Object.keys(flag).length >= this.msSize().mines) return; // 旗は地雷の数まで
+    else flag[i] = true;
     this.setState({ ms: Object.assign({}, m, { flag }) });
   }
   renderVals() {
