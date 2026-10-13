@@ -666,6 +666,27 @@ section{scroll-margin-top:84px}
 <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 900; color: {{accent}}; background: #111111; padding: 4px 12px; white-space: nowrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg>正解済み</span>
 </sc-if>
 </div>
+<sc-if value="{{q.isTs}}" hint-placeholder-val="{{ false }}">
+<div style="position: relative; width: 100%; height: 0; padding-top: 75%; box-sizing: border-box; overflow: hidden; border: 2px solid #111111; background: {{accent}}">
+<div style="position: absolute; top: 3%; left: 2.25%; right: 2.25%; bottom: 3%; box-sizing: border-box; overflow: hidden; background: #FFFFFF; border: 2px solid #111111">
+<div style="position: absolute; top: 4%; left: 4%; right: 4%; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(13px, 3.4vw, 22px); line-height: 1; letter-spacing: 0.08em; white-space: nowrap">ROUND {{pz.ts.round}} / 3</span>
+<span aria-label="{{pz.ts.clearedLabel}}" style="display: flex; gap: 4px"><sc-for list="{{pz.ts.dots}}" as="d" hint-placeholder-count="3"><span style="width: clamp(9px, 2.2vw, 14px); height: clamp(9px, 2.2vw, 14px); box-sizing: border-box; border: 2px solid #111111; background: {{d}}"></span></sc-for></span>
+</div>
+<p aria-live="polite" style="position: absolute; top: 13%; left: 4%; right: 4%; margin: 0; text-align: center; font-weight: 900; font-size: clamp(11px, 2.8vw, 17px); line-height: 1.4; color: {{pz.ts.msgColor}}">{{pz.ts.message}}</p>
+<div aria-hidden="true" style="position: absolute; top: 73%; left: 3%; right: 3%; height: 2px; background: #111111"></div>
+<sc-for list="{{pz.ts.cups}}" as="c" hint-placeholder-count="3">
+<button type="button" aria-label="{{c.aria}}" onClick="{{c.open}}" disabled="{{c.locked}}" style="-webkit-appearance: none; appearance: none; position: absolute; top: 33%; left: {{c.left}}; width: 26%; height: 40%; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; z-index: {{c.z}}; transform: scale({{c.scale}}); transition: left {{c.dur}}ms ease-in-out, transform {{c.dur}}ms ease-in-out; cursor: {{c.cursor}}">
+<sc-if value="{{c.hasBall}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position: absolute; left: 35%; bottom: 0; width: 30%; aspect-ratio: 1 / 1; box-sizing: border-box; border-radius: 50%; background: #C0281D; border: 2px solid #111111"></span></sc-if>
+<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; overflow: visible; transform: translateY({{c.lift}}); transition: transform 260ms ease"><path d="M24 4 H76 L94 92 H6 Z" fill="#111111"></path><path d="M19 30 H81 L84 44 H16 Z" fill="{{accent}}"></path><rect x="2" y="90" width="96" height="10" fill="#111111"></rect></svg>
+</button>
+</sc-for>
+<sc-if value="{{pz.ts.showStart}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{pz.ts.start}}" style="-webkit-appearance: none; appearance: none; position: absolute; left: 50%; bottom: 4%; transform: translateX(-50%); min-height: 44px; margin: 0; padding: 0 clamp(14px, 4vw, 28px); border-radius: 0; font-family: inherit; font-size: clamp(12px, 3vw, 16px); font-weight: 900; white-space: nowrap; color: {{accent}}; background: #111111; border: 2px solid #111111; cursor: pointer">{{pz.ts.startLabel}}</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
 <sc-if value="{{q.isMs}}" hint-placeholder-val="{{ false }}">
 <div style="width: 100%; box-sizing: border-box; overflow: hidden; border: 2px solid #111111; background: {{accent}}; padding: clamp(8px, 2.2vw, 18px); display: flex; align-items: stretch; gap: clamp(6px, 1.8vw, 14px)">
 <div role="group" aria-label="マインスイーパー 9×9マス・地雷10個" style="flex: 0 0 72%; width: 72%; min-width: 0; aspect-ratio: 1 / 1; box-sizing: border-box; background: #111111; border: 2px solid #111111; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); grid-template-rows: repeat(9, minmax(0, 1fr)); gap: 2px; touch-action: manipulation">
@@ -695,11 +716,11 @@ section{scroll-margin-top:84px}
 </div>
 </sc-for>
 </div>
-<sc-if value="{{pz.onMs}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{pz.onGame}}" hint-placeholder-val="{{ false }}">
 <div style="display: flex; flex-direction: column; gap: 8px; text-align: left; background: #FFFFFF; border: 3px solid #111111; padding: clamp(16px, 3vw, 24px)">
-<p style="margin: 0; font-size: 14px; font-weight: 900">Q.15 はマインスイーパー</p>
-<p style="margin: 0; font-size: 14px; color: #222222">地雷を避けて、すべてのマスを開ければ正解です。地雷を踏むと盤面がランダムに入れ替わります。旗はモード切替ボタンで立てられます。</p>
-<sc-if value="{{pz.msSolved}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-size: 14px; font-weight: 900">{{pz.note.title}}</p>
+<p style="margin: 0; font-size: 14px; color: #222222">{{pz.note.body}}</p>
+<sc-if value="{{pz.note.solved}}" hint-placeholder-val="{{ false }}">
 <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>正解！次の問題へ進みましょう。</p>
 </sc-if>
 <p style="margin: 0; font-size: 12px; color: #444444">正解数 <span style="font-weight: 900; color: #111111">{{pz.solvedCount}}</span> / {{pz.total}}</p>
@@ -918,6 +939,62 @@ class Component extends DCLogic {
     clearInterval(this.cdTimer);
     clearTimeout(this.pzScrollTimer);
     clearTimeout(this.msTimer);
+    clearTimeout(this.tsTimer);
+  }
+  // ===== スリーシェルゲーム（Q.28） =====
+  // ラウンドごとの入れ替え回数と1回の速さ（ミリ秒）。3ラウンド連続で正解するとクリア。
+  tsRounds() { return [{ swaps: 12, ms: 280 }, { swaps: 18, ms: 210 }, { swaps: 24, ms: 150 }]; }
+  tsFresh(failed) { return { slots: [0, 1, 2], ball: -1, status: 'ready', round: 1, lifted: {}, picked: -1, front: -1, back: -1, ms: 280, failed: failed || 0 }; }
+  tsSet(patch) {
+    const cur = (this.state && this.state.ts) || this.tsFresh(0);
+    this.setState({ ts: Object.assign({}, cur, patch) });
+  }
+  tsStart() {
+    const cur = (this.state && this.state.ts) || this.tsFresh(0);
+    if (cur.status !== 'ready' && cur.status !== 'roundWin') return;
+    const round = cur.status === 'roundWin' ? cur.round + 1 : 1;
+    const cfg = this.tsRounds()[round - 1];
+    const slots = [0, 1, 2];
+    for (let i = 2; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = slots[i]; slots[i] = slots[j]; slots[j] = t; }
+    const ball = Math.floor(Math.random() * 3);
+    clearTimeout(this.tsTimer);
+    this.tsSet({ slots, ball, round, status: 'reveal', lifted: { [ball]: true }, picked: -1, front: -1, back: -1, ms: cfg.ms });
+    this.tsTimer = setTimeout(() => {
+      this.tsSet({ lifted: {}, status: 'shuffle' });
+      this.tsTimer = setTimeout(() => this.tsStep(cfg.swaps, cfg), 450);
+    }, 1100);
+  }
+  tsStep(left, cfg) {
+    const cur = (this.state && this.state.ts) || this.tsFresh(0);
+    if (cur.status !== 'shuffle') return;
+    if (left <= 0) { this.tsSet({ status: 'pick', front: -1, back: -1 }); return; }
+    const a = Math.floor(Math.random() * 3);
+    const b = (a + 1 + Math.floor(Math.random() * 2)) % 3;
+    const slots = cur.slots.slice();
+    const ca = slots.indexOf(a), cb = slots.indexOf(b);
+    slots[ca] = b; slots[cb] = a;
+    const fwd = Math.random() < 0.5;
+    this.tsSet({ slots, front: fwd ? ca : cb, back: fwd ? cb : ca });
+    this.tsTimer = setTimeout(() => this.tsStep(left - 1, cfg), cfg.ms);
+  }
+  tsPick(cup, qIndex) {
+    const s = this.state || {};
+    const cur = s.ts || this.tsFresh(0);
+    if (cur.status !== 'pick') return;
+    if (cup === cur.ball) {
+      const last = cur.round >= this.tsRounds().length;
+      const next = { ts: Object.assign({}, cur, { status: last ? 'won' : 'roundWin', lifted: { [cup]: true }, picked: cup }) };
+      if (last) {
+        next.pzSolved = Object.assign({}, s.pzSolved, { [qIndex]: true });
+        next.pzResults = Object.assign({}, s.pzResults, { [qIndex]: 'correct' });
+      }
+      this.setState(next);
+      return;
+    }
+    // 失敗：正解を見せたあと、ラウンド1から新しいランダム配置でやり直し
+    this.tsSet({ status: 'lost', lifted: { [cup]: true, [cur.ball]: true }, picked: cup });
+    clearTimeout(this.tsTimer);
+    this.tsTimer = setTimeout(() => this.setState({ ts: this.tsFresh(cur.failed + 1) }), 1800);
   }
   // ===== マインスイーパー（Q.15） =====
   // 盤面サイズと地雷数
@@ -1089,13 +1166,17 @@ class Component extends DCLogic {
       .replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60));
     // マインスイーパーに置き換える問題（0始まり：14 = Q.15）。クリアすると正解扱いになります。
     const MS_Q = 14;
+    // スリーシェルゲームに置き換える問題（27 = Q.28）。3ラウンド連続で当てると正解扱いになります。
+    const TS_Q = 27;
+    const isGame = (i) => i === MS_Q || i === TS_Q;
     const items = PUZZLE_IMAGES.map((img, i) => ({
       no: 'Q.' + pad(i + 1),
       label: '問題 ' + (i + 1) + ' / ' + total,
       img,
-      hasImg: !!img && i !== MS_Q,
-      noImg: !img && i !== MS_Q,
+      hasImg: !!img && !isGame(i),
+      noImg: !img && !isGame(i),
       isMs: i === MS_Q,
+      isTs: i === TS_Q,
       solved: !!solved[i]
     }));
     const msSt = st.ms || this.msFresh(0);
@@ -1142,6 +1223,43 @@ class Component extends DCLogic {
       modeBg: msFlagMode ? '#111111' : '#FFFFFF',
       modeInk: msFlagMode ? accent : '#111111',
       toggleFlag: () => this.setState({ msFlagMode: !(this.state && this.state.msFlagMode) })
+    };
+    const tsSt = st.ts || this.tsFresh(0);
+    const tsTotal = this.tsRounds().length;
+    const SLOT_NAME = ['左', '中央', '右'];
+    const tsCleared = tsSt.status === 'won' ? tsTotal : (tsSt.status === 'roundWin' ? tsSt.round : tsSt.round - 1);
+    const tsView = {
+      round: tsSt.round,
+      dots: [0, 1, 2].map((i) => (i < tsCleared ? '#111111' : '#FFFFFF')),
+      clearedLabel: tsCleared + ' / ' + tsTotal + ' ラウンド正解',
+      message: tsSt.status === 'won' ? 'クリア！Q.28 正解'
+        : tsSt.status === 'roundWin' ? '正解！次はもっと速いぞ'
+        : tsSt.status === 'lost' ? 'ハズレ…ボールはこっち'
+        : tsSt.status === 'pick' ? 'ボールはどのカップ？'
+        : tsSt.status === 'shuffle' ? 'シャッフル中…'
+        : tsSt.status === 'reveal' ? 'ボールはここ！よく見ておけ'
+        : tsSt.failed > 0 ? 'ハズレ！配置が入れ替わった'
+        : '3ラウンド連続でボールを見抜け',
+      msgColor: tsSt.status === 'won' || tsSt.status === 'roundWin' ? '#0F6A3D' : tsSt.status === 'lost' ? '#C0281D' : '#111111',
+      showStart: tsSt.status === 'ready' || tsSt.status === 'roundWin',
+      startLabel: tsSt.status === 'roundWin' ? 'ラウンド ' + (tsSt.round + 1) + ' へ' : (tsSt.failed > 0 ? 'もう一度挑戦' : 'スタート'),
+      start: () => this.tsStart(),
+      cups: [0, 1, 2].map((id) => {
+        const slot = tsSt.slots.indexOf(id);
+        const pickable = tsSt.status === 'pick';
+        return {
+          left: (6 + slot * 31) + '%',
+          z: id === tsSt.front ? 3 : id === tsSt.back ? 1 : 2,
+          scale: tsSt.status === 'shuffle' && id === tsSt.front ? 1.08 : tsSt.status === 'shuffle' && id === tsSt.back ? 0.92 : 1,
+          dur: tsSt.ms,
+          lift: tsSt.lifted[id] ? '-34%' : '0%',
+          hasBall: id === tsSt.ball,
+          locked: !pickable,
+          cursor: pickable ? 'pointer' : 'default',
+          aria: SLOT_NAME[slot] + 'のカップ',
+          open: () => this.tsPick(id, TS_Q)
+        };
+      })
     };
     let qn = 0;
     const placeRows = PLACE_ROWS.map((line) => ({
@@ -1252,9 +1370,18 @@ class Component extends DCLogic {
       pz: {
         items,
         ms: msView,
-        onMs: idx === MS_Q,
-        showForm: idx !== MS_Q,
-        msSolved: !!solved[MS_Q],
+        ts: tsView,
+        onGame: isGame(idx),
+        showForm: !isGame(idx),
+        note: idx === TS_Q ? {
+          title: 'Q.28 はスリーシェルゲーム',
+          body: 'ボールの入ったカップを見抜き、3ラウンド連続で当てれば正解です。ラウンドごとにシャッフルが速くなります。外すと配置がランダムに入れ替わり、ラウンド1からやり直しです。',
+          solved: !!solved[TS_Q]
+        } : {
+          title: 'Q.15 はマインスイーパー',
+          body: '地雷を避けて、すべてのマスを開ければ正解です。地雷を踏むと盤面がランダムに入れ替わります。旗はモード切替ボタンで立てられます。',
+          solved: !!solved[MS_Q]
+        },
         total,
         current: idx + 1,
         currentNo: onPlace ? '謎の場所' : 'Q.' + pad(idx + 1),
