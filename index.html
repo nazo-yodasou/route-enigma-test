@@ -977,7 +977,7 @@ class Component extends DCLogic {
   }
   // ===== 一筆書き（Q.17） =====
   // 盤面サイズ・白マスの数の範囲（残りは壁）・制限時間（秒）。すべての白マスを一筆で通ればクリア。
-  ofConf() { return { n: 7, minCells: 42, maxCells: 45, limit: 40 }; }
+  ofConf() { return { n: 7, minCells: 42, maxCells: 45, limit: 12 }; }
   ofFresh(failed) { return { status: 'ready', open: {}, start: -1, path: [], startedAt: 0, now: 0, failed: failed || 0 }; }
   ofGet() { return this.ofS || (this.ofS = this.ofFresh(0)); }
   ofPut(patch) { this.ofS = Object.assign({}, this.ofGet(), patch); this.setState({ ofRev: ((this.state && this.state.ofRev) || 0) + 1 }); }
@@ -1400,7 +1400,7 @@ class Component extends DCLogic {
       showCover: !ofShowBoard,
       cursor: ofPlaying ? 'pointer' : 'default',
       time: ofLeftSec,
-      timeColor: ofPlaying && ofLeftSec <= 10 ? '#C0281D' : '#111111',
+      timeColor: ofPlaying && ofLeftSec <= 5 ? '#C0281D' : '#111111',
       message: ofSt.status === 'won' ? 'クリア！Q.17 正解'
         : ofSt.status === 'lost' ? '時間切れ…'
         : ofPlaying ? '残り ' + (ofOpenCount - ofSt.path.length) + ' マス'
@@ -1568,7 +1568,7 @@ class Component extends DCLogic {
         of: ofView,
         note: idx === OF_Q ? {
           title: 'Q.17 は一筆書き',
-          body: '赤枠のマスからスタートし、指でなぞって白いマスをすべて一度ずつ通れば正解です。斜めには進めません。制限時間は40秒。時間切れになると問題がランダムに入れ替わります。',
+          body: '赤枠のマスからスタートし、指でなぞって白いマスをすべて一度ずつ通れば正解です。斜めには進めません。制限時間は12秒。時間切れになると問題がランダムに入れ替わります。',
           solved: !!solved[OF_Q]
         } : idx === TS_Q ? {
           title: 'Q.28 はスリーシェルゲーム',
