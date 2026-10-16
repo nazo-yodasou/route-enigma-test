@@ -1571,9 +1571,9 @@ class Component extends DCLogic {
       if (dx < 0 && s.left >= s.max - 2) go(0);
       else if (dx > 0 && s.left <= 2) go(slideCount - 1);
     };
-    // 最初の謎の公開日時（日本時間）。テスト中：2026年10月11日 0:00。本番は '2026-11-14T00:00:00+09:00' / '11月14日 0:00' に戻す。
-    const REVEAL_AT = new Date('2026-10-11T00:00:00+09:00').getTime();
-    const REVEAL_LABEL = '10月11日 0:00';
+    // 最初の謎の公開日時（日本時間）。
+    const REVEAL_AT = new Date('2026-11-14T00:00:00+09:00').getTime();
+    const REVEAL_LABEL = '11月14日 0:00';
     const now = (this.state && this.state.cdNow) || Date.now();
     const left = Math.max(0, REVEAL_AT - now);
     const open = left <= 0 || !!this.props.previewPuzzles;
