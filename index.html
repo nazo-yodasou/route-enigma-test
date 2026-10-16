@@ -666,6 +666,37 @@ section{scroll-margin-top:84px}
 <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 900; color: {{accent}}; background: #111111; padding: 4px 12px; white-space: nowrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"></path></svg>正解済み</span>
 </sc-if>
 </div>
+<sc-if value="{{q.isOf}}" hint-placeholder-val="{{ false }}">
+<div style="width: 100%; box-sizing: border-box; overflow: hidden; border: 2px solid #111111; background: {{accent}}; padding: clamp(8px, 2.2vw, 18px); display: flex; align-items: stretch; gap: clamp(6px, 1.8vw, 14px)">
+<div role="group" aria-label="一筆書き 7×7マス" onPointerDown="{{pz.of.down}}" onPointerMove="{{pz.of.move}}" onPointerUp="{{pz.of.up}}" onPointerCancel="{{pz.of.up}}" style="position: relative; flex: 0 0 72%; width: 72%; min-width: 0; aspect-ratio: 1 / 1; box-sizing: border-box; background: #111111; border: 2px solid #111111; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); grid-template-rows: repeat(7, minmax(0, 1fr)); gap: 2px; touch-action: none; user-select: none; -webkit-user-select: none; cursor: {{pz.of.cursor}}">
+<sc-for list="{{pz.of.cells}}" as="c" hint-placeholder-count="49">
+<div data-of-cell="{{c.i}}" aria-label="{{c.aria}}" style="position: relative; min-width: 0; min-height: 0; background: {{c.bg}}; box-shadow: {{c.ring}}">
+<sc-if value="{{c.up}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position: absolute; left: 38%; top: 0; width: 24%; height: 50%; background: #111111"></span></sc-if>
+<sc-if value="{{c.down}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position: absolute; left: 38%; top: 50%; width: 24%; height: 50%; background: #111111"></span></sc-if>
+<sc-if value="{{c.left}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position: absolute; left: 0; top: 38%; width: 50%; height: 24%; background: #111111"></span></sc-if>
+<sc-if value="{{c.right}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position: absolute; left: 50%; top: 38%; width: 50%; height: 24%; background: #111111"></span></sc-if>
+<sc-if value="{{c.dot}}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position: absolute; left: {{c.dotPos}}; top: {{c.dotPos}}; width: {{c.dotSize}}; height: {{c.dotSize}}; border-radius: {{c.dotRadius}}; background: #111111"></span></sc-if>
+</div>
+</sc-for>
+<sc-if value="{{pz.of.showCover}}" hint-placeholder-val="{{ true }}">
+<div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10%; text-align: center; background: rgba(255,255,255,0.9)">
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(16px, 4.6vw, 30px); line-height: 1; letter-spacing: 0.06em">ONE STROKE</span>
+<span style="font-size: clamp(10px, 2.4vw, 14px); font-weight: 700; line-height: 1.5">スタートを押すと問題が現れ、カウントダウンが始まります</span>
+</div>
+</sc-if>
+</div>
+<div style="flex: 1 1 0; min-width: 0; overflow: hidden; box-sizing: border-box; background: #FFFFFF; border: 2px solid #111111; padding: clamp(5px, 1.6vw, 14px); display: flex; flex-direction: column; justify-content: space-between; gap: 6px; text-align: left; overflow-wrap: anywhere">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(10px, 2.2vw, 14px); line-height: 1; letter-spacing: 0.12em">TIME</span>
+<span role="timer" style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(22px, 6vw, 44px); line-height: 1; font-variant-numeric: tabular-nums; color: {{pz.of.timeColor}}">{{pz.of.time}}</span>
+</div>
+<p aria-live="polite" style="margin: 0; font-size: clamp(10px, 2.4vw, 14px); font-weight: 900; line-height: 1.5; color: {{pz.of.msgColor}}">{{pz.of.message}}</p>
+<sc-if value="{{pz.of.showButton}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{pz.of.action}}" style="-webkit-appearance: none; appearance: none; width: 100%; min-width: 0; min-height: 44px; box-sizing: border-box; margin: 0; padding: 4px 2px; border-radius: 0; font-family: inherit; font-size: clamp(11px, 2.4vw, 14px); font-weight: 900; line-height: 1.2; color: {{pz.of.btnInk}}; background: {{pz.of.btnBg}}; border: 2px solid #111111; cursor: pointer">{{pz.of.btnLabel}}</button>
+</sc-if>
+</div>
+</div>
+</sc-if>
 <sc-if value="{{q.isTs}}" hint-placeholder-val="{{ false }}">
 <div style="position: relative; width: 100%; height: 0; padding-top: 75%; box-sizing: border-box; overflow: hidden; border: 2px solid #111111; background: {{accent}}">
 <div style="position: absolute; top: 3%; left: 2.25%; right: 2.25%; bottom: 3%; box-sizing: border-box; overflow: hidden; background: #FFFFFF; border: 2px solid #111111">
@@ -786,7 +817,8 @@ section{scroll-margin-top:84px}
   var EVENTS = {
     onclick: 'click', onsubmit: 'submit', onchange: 'input', oninput: 'input',
     onscroll: 'scroll', ontouchstart: 'touchstart', ontouchend: 'touchend',
-    onkeydown: 'keydown', onfocus: 'focus', onblur: 'blur', oncontextmenu: 'contextmenu'
+    onkeydown: 'keydown', onfocus: 'focus', onblur: 'blur', oncontextmenu: 'contextmenu',
+    onpointerdown: 'pointerdown', onpointermove: 'pointermove', onpointerup: 'pointerup', onpointercancel: 'pointercancel'
   };
   var BOOL_ATTRS = { disabled: 1, checked: 1, hidden: 1, open: 1, selected: 1, readonly: 1, required: 1 };
   var HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
@@ -940,6 +972,109 @@ class Component extends DCLogic {
     clearTimeout(this.pzScrollTimer);
     clearTimeout(this.msTimer);
     clearTimeout(this.tsTimer);
+    clearInterval(this.ofTimer);
+    clearTimeout(this.ofLostTimer);
+  }
+  // ===== 一筆書き（Q.17） =====
+  // 盤面サイズ・白マスの数の範囲（残りは壁）・制限時間（秒）。すべての白マスを一筆で通ればクリア。
+  ofConf() { return { n: 7, minCells: 42, maxCells: 45, limit: 40 }; }
+  ofFresh(failed) { return { status: 'ready', open: {}, start: -1, path: [], startedAt: 0, now: 0, failed: failed || 0 }; }
+  ofGet() { return this.ofS || (this.ofS = this.ofFresh(0)); }
+  ofPut(patch) { this.ofS = Object.assign({}, this.ofGet(), patch); this.setState({ ofRev: ((this.state && this.state.ofRev) || 0) + 1 }); }
+  ofNeighbors(i) {
+    const n = this.ofConf().n, r = Math.floor(i / n), c = i % n, out = [];
+    if (r > 0) out.push(i - n);
+    if (r < n - 1) out.push(i + n);
+    if (c > 0) out.push(i - 1);
+    if (c < n - 1) out.push(i + 1);
+    return out;
+  }
+  // 解ける問題を作る：ランダムな一筆の道を作り、通らなかったマスを壁にする
+  ofGenerate() {
+    const { n, minCells, maxCells } = this.ofConf();
+    const want = minCells + Math.floor(Math.random() * (maxCells - minCells + 1));
+    let best = [];
+    for (let t = 0; t < 600 && best.length < want; t++) {
+      const seen = {};
+      const path = [Math.floor(Math.random() * n * n)];
+      seen[path[0]] = true;
+      for (;;) {
+        const last = path[path.length - 1];
+        const opts = this.ofNeighbors(last).filter((k) => !seen[k]);
+        if (!opts.length) break;
+        const deg = (k) => this.ofNeighbors(k).filter((m) => !seen[m]).length;
+        let pick;
+        if (Math.random() < 0.2) pick = opts[Math.floor(Math.random() * opts.length)];
+        else {
+          const min = Math.min.apply(null, opts.map(deg));
+          const low = opts.filter((k) => deg(k) === min);
+          pick = low[Math.floor(Math.random() * low.length)];
+        }
+        seen[pick] = true;
+        path.push(pick);
+      }
+      if (path.length > best.length) best = path;
+    }
+    // 道の両端を少し削って白マスの数を調整し、壁を必ず作る
+    const cut = Math.max(0, best.length - want);
+    const head = Math.floor(Math.random() * (cut + 1));
+    best = best.slice(head, best.length - (cut - head));
+    if (Math.random() < 0.5) best = best.slice().reverse();
+    const open = {};
+    best.forEach((k) => { open[k] = true; });
+    return { open, start: best[0] };
+  }
+  ofStart() {
+    const s = this.ofGet();
+    if (s.status !== 'ready') return;
+    const p = this.ofGenerate();
+    clearInterval(this.ofTimer);
+    const now = Date.now();
+    this.ofPut({ status: 'playing', open: p.open, start: p.start, path: [p.start], startedAt: now, now });
+    this.ofTimer = setInterval(() => this.ofTick(), 200);
+  }
+  ofTick() {
+    const s = this.ofGet();
+    if (s.status !== 'playing') { clearInterval(this.ofTimer); return; }
+    const now = Date.now();
+    if (now - s.startedAt >= this.ofConf().limit * 1000) {
+      // 時間切れ：失敗。少し見せてから新しいランダム問題に入れ替える
+      clearInterval(this.ofTimer);
+      this.ofPut({ status: 'lost', now });
+      clearTimeout(this.ofLostTimer);
+      this.ofLostTimer = setTimeout(() => this.ofPut(this.ofFresh(s.failed + 1)), 1800);
+      return;
+    }
+    this.ofPut({ now });
+  }
+  ofEnter(i, qIndex) {
+    const s = this.ofGet();
+    if (s.status !== 'playing' || !s.open[i]) return;
+    const p = s.path;
+    const last = p[p.length - 1];
+    if (i === last) return;
+    let path;
+    if (p.length >= 2 && i === p[p.length - 2]) path = p.slice(0, -1);
+    else if (p.indexOf(i) !== -1) path = p.slice(0, p.indexOf(i) + 1);
+    else if (this.ofNeighbors(last).indexOf(i) !== -1) path = p.concat([i]);
+    else return;
+    if (path.length === Object.keys(s.open).length) {
+      clearInterval(this.ofTimer);
+      this.ofS = Object.assign({}, s, { path, status: 'won', now: Date.now() });
+      this.setState({
+        ofRev: ((this.state && this.state.ofRev) || 0) + 1,
+        pzSolved: Object.assign({}, this.state && this.state.pzSolved, { [qIndex]: true }),
+        pzResults: Object.assign({}, this.state && this.state.pzResults, { [qIndex]: 'correct' })
+      });
+      return;
+    }
+    this.ofPut({ path });
+  }
+  ofCellAt(e) {
+    if (!e || typeof document === 'undefined') return -1;
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    const cell = el && el.closest ? el.closest('[data-of-cell]') : null;
+    return cell ? +cell.getAttribute('data-of-cell') : -1;
   }
   // ===== スリーシェルゲーム（Q.28） =====
   // ラウンドごとの入れ替え回数と1回の速さ（ミリ秒）。3ラウンド連続で正解するとクリア。
@@ -1168,7 +1303,9 @@ class Component extends DCLogic {
     const MS_Q = 14;
     // スリーシェルゲームに置き換える問題（27 = Q.28）。3ラウンド連続で当てると正解扱いになります。
     const TS_Q = 27;
-    const isGame = (i) => i === MS_Q || i === TS_Q;
+    // 一筆書きに置き換える問題（16 = Q.17）。制限時間内に全マスを一筆で通ると正解扱いになります。
+    const OF_Q = 16;
+    const isGame = (i) => i === MS_Q || i === TS_Q || i === OF_Q;
     const items = PUZZLE_IMAGES.map((img, i) => ({
       no: 'Q.' + pad(i + 1),
       label: '問題 ' + (i + 1) + ' / ' + total,
@@ -1177,6 +1314,7 @@ class Component extends DCLogic {
       noImg: !img && !isGame(i),
       isMs: i === MS_Q,
       isTs: i === TS_Q,
+      isOf: i === OF_Q,
       solved: !!solved[i]
     }));
     const msSt = st.ms || this.msFresh(0);
@@ -1223,6 +1361,60 @@ class Component extends DCLogic {
       modeBg: msFlagMode ? '#111111' : '#FFFFFF',
       modeInk: msFlagMode ? accent : '#111111',
       toggleFlag: () => this.setState({ msFlagMode: !(this.state && this.state.msFlagMode) })
+    };
+    const ofSt = this.ofGet();
+    const ofConf = this.ofConf();
+    const ofPlaying = ofSt.status === 'playing';
+    const ofShowBoard = ofSt.status !== 'ready';
+    const ofLeftSec = ofSt.status === 'ready' ? ofConf.limit
+      : Math.max(0, Math.ceil((ofConf.limit * 1000 - (ofSt.now - ofSt.startedAt)) / 1000));
+    const ofOpenCount = Object.keys(ofSt.open).length;
+    const ofPosIn = {};
+    ofSt.path.forEach((k, j) => { ofPosIn[k] = j; });
+    const ofCells = [];
+    for (let i = 0; i < ofConf.n * ofConf.n; i++) {
+      const isOpen = ofShowBoard && !!ofSt.open[i];
+      const j = ofPosIn[i];
+      const inPath = isOpen && j !== undefined;
+      const prev = inPath && j > 0 ? ofSt.path[j - 1] : -1;
+      const next = inPath && j < ofSt.path.length - 1 ? ofSt.path[j + 1] : -1;
+      const linked = (k) => k === prev || k === next;
+      const isHead = inPath && j === ofSt.path.length - 1 && ofSt.status !== 'won';
+      ofCells.push({
+        i,
+        bg: !ofShowBoard ? '#EDEDED' : !isOpen ? '#111111' : inPath ? accent : '#FFFFFF',
+        ring: isOpen && i === ofSt.start ? 'inset 0 0 0 3px #C0281D' : 'none',
+        up: inPath && linked(i - ofConf.n),
+        down: inPath && linked(i + ofConf.n),
+        left: inPath && i % ofConf.n > 0 && linked(i - 1),
+        right: inPath && i % ofConf.n < ofConf.n - 1 && linked(i + 1),
+        dot: inPath,
+        dotPos: isHead ? '22%' : '38%',
+        dotSize: isHead ? '56%' : '24%',
+        dotRadius: isHead ? '50%' : '0',
+        aria: !isOpen ? '壁' : (i === ofSt.start ? 'スタート' : inPath ? '通過済み' : '未通過')
+      });
+    }
+    const ofView = {
+      cells: ofCells,
+      showCover: !ofShowBoard,
+      cursor: ofPlaying ? 'pointer' : 'default',
+      time: ofLeftSec,
+      timeColor: ofPlaying && ofLeftSec <= 10 ? '#C0281D' : '#111111',
+      message: ofSt.status === 'won' ? 'クリア！Q.17 正解'
+        : ofSt.status === 'lost' ? '時間切れ…'
+        : ofPlaying ? '残り ' + (ofOpenCount - ofSt.path.length) + ' マス'
+        : ofSt.failed > 0 ? '時間切れ！問題が入れ替わった'
+        : ofConf.limit + '秒以内に全マスを一筆で',
+      msgColor: ofSt.status === 'won' ? '#0F6A3D' : ofSt.status === 'lost' ? '#C0281D' : '#111111',
+      showButton: ofSt.status === 'ready' || ofPlaying,
+      btnLabel: ofPlaying ? 'やり直す' : (ofSt.failed > 0 ? 'もう一度' : 'スタート'),
+      btnBg: ofPlaying ? '#FFFFFF' : '#111111',
+      btnInk: ofPlaying ? '#111111' : accent,
+      action: () => (this.ofGet().status === 'playing' ? this.ofPut({ path: [this.ofGet().start] }) : this.ofStart()),
+      down: (e) => { this.ofDragging = true; this.ofEnter(this.ofCellAt(e), OF_Q); },
+      move: (e) => { if (this.ofDragging) this.ofEnter(this.ofCellAt(e), OF_Q); },
+      up: () => { this.ofDragging = false; }
     };
     const tsSt = st.ts || this.tsFresh(0);
     const tsTotal = this.tsRounds().length;
@@ -1373,7 +1565,12 @@ class Component extends DCLogic {
         ts: tsView,
         onGame: isGame(idx),
         showForm: !isGame(idx),
-        note: idx === TS_Q ? {
+        of: ofView,
+        note: idx === OF_Q ? {
+          title: 'Q.17 は一筆書き',
+          body: '赤枠のマスからスタートし、指でなぞって白いマスをすべて一度ずつ通れば正解です。斜めには進めません。制限時間は40秒。時間切れになると問題がランダムに入れ替わります。',
+          solved: !!solved[OF_Q]
+        } : idx === TS_Q ? {
           title: 'Q.28 はスリーシェルゲーム',
           body: 'ボールの入ったカップを見抜き、3ラウンド連続で当てれば正解です。ラウンドごとにシャッフルが速くなります。外すと配置がランダムに入れ替わり、ラウンド1からやり直しです。',
           solved: !!solved[TS_Q]
