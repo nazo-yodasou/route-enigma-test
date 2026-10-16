@@ -652,9 +652,16 @@ section{scroll-margin-top:84px}
 </sc-if>
 <sc-if value="{{pz.showStep2}}" hint-placeholder-val="{{ false }}">
 <div role="status" style="box-sizing: border-box; border: 3px solid #111111; background: {{accent}}; padding: clamp(16px, 3vw, 22px); display: flex; flex-direction: column; gap: 10px">
-<div style="align-self: flex-start; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; background: #111111; color: {{accent}}; padding: 4px 10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg>次の行動</div>
-<p style="margin: 0; font-size: clamp(15px, 4.2vw, 18px); font-weight: 900; line-height: 1.8">15時50分になりましたら、お手荷物（宿泊用のお荷物を含む）をすべてお持ちのうえ、チーム全員で東京ドームホテルの受付へお越しください。</p>
-<p style="margin: 0; font-size: clamp(14px, 3.9vw, 16px); line-height: 1.8">受付では、チームリーダーのお名前をお伝えください。</p>
+<div style="align-self: flex-start; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; background: #111111; color: {{accent}}; padding: 4px 10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"></path><path d="M16.5 8.5a5 5 0 0 1 0 7"></path><path d="M19 6a8.5 8.5 0 0 1 0 12"></path></svg>シータからのメッセージ</div>
+<p style="margin: 0; font-size: clamp(15px, 4.2vw, 18px); font-weight: 900; line-height: 1.8">{{pz.voice.title}}</p>
+<p style="margin: 0; font-size: clamp(14px, 3.9vw, 16px); line-height: 1.8">{{pz.voice.body}}</p>
+<div aria-hidden="true" style="height: 10px; background: #FFFFFF; border: 2px solid #111111; overflow: hidden"><div style="height: 100%; width: {{pz.voice.progress}}; background: #111111"></div></div>
+<sc-if value="{{pz.voice.showPlay}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{pz.voice.play}}" style="-webkit-appearance: none; appearance: none; align-self: flex-start; min-height: 48px; margin: 0; padding: 0 22px; border-radius: 0; font-family: inherit; font-size: 16px; font-weight: 900; color: {{accent}}; background: #111111; border: 2px solid #111111; display: inline-flex; align-items: center; gap: 8px; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"></path></svg>音声を再生</button>
+</sc-if>
+<sc-if value="{{pz.voice.done}}" hint-placeholder-val="{{ false }}">
+<a href="{{pz.voice.nextUrl}}" style="align-self: flex-start; font-size: 14px; font-weight: 900; text-decoration: underline">移動しない場合はこちら</a>
+</sc-if>
 </div>
 </sc-if>
 </div>
@@ -772,7 +779,7 @@ section{scroll-margin-top:84px}
 <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>正解！上に表示された「次の行動」に従ってください。</p>
 </sc-if>
 <sc-if value="{{pz.isStart}}" hint-placeholder-val="{{ false }}">
-<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>スタートを受け付けました。上に表示された「次の行動」に従ってください。</p>
+<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #0F6A3D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>スタートを受け付けました。上の音声メッセージをお聞きください。</p>
 </sc-if>
 <sc-if value="{{pz.isWrong}}" hint-placeholder-val="{{ false }}">
 <p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: #C0281D"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m9 9 6 6"></path><path d="m15 9-6 6"></path></svg>不正解…もう一度考えてみよう。</p>
@@ -969,11 +976,32 @@ class Component extends DCLogic {
   }
   componentWillUnmount() {
     clearInterval(this.cdTimer);
+    if (this.voice) this.voice.pause();
     clearTimeout(this.pzScrollTimer);
     clearTimeout(this.msTimer);
     clearTimeout(this.tsTimer);
     clearInterval(this.ofTimer);
     clearTimeout(this.ofLostTimer);
+  }
+  // ===== 「スタート」後の音声 =====
+  // 再生し、終わったら次のページへ移動する。再生が止められた場合は再生ボタンを出す。
+  voicePlay(src, nextUrl) {
+    if (typeof Audio === 'undefined') return;
+    if (!this.voice) {
+      const a = new Audio(src);
+      a.preload = 'auto';
+      a.addEventListener('timeupdate', () => {
+        if (a.duration) this.setState({ voicePos: a.currentTime / a.duration });
+      });
+      a.addEventListener('ended', () => {
+        this.setState({ voice: 'done', voicePos: 1 });
+        window.location.href = nextUrl;
+      });
+      this.voice = a;
+    }
+    const p = this.voice.play();
+    this.setState({ voice: 'playing' });
+    if (p && p.catch) p.catch(() => this.setState({ voice: 'blocked' }));
   }
   // ===== 一筆書き（Q.17） =====
   // 盤面サイズ・白マスの数の範囲（残りは壁）・制限時間（秒）。すべての白マスを一筆で通ればクリア。
@@ -1283,6 +1311,9 @@ class Component extends DCLogic {
     // 「スタート」を受け付け始める日時（日本時間）。テスト中：2026年10月11日 1:15。
     const START_AT = new Date('2026-10-11T01:15:00+09:00').getTime();
     const START_LABEL = '10月11日 1時15分';
+    // 「スタート」を受け付けた直後に流す音声と、音声が終わったら移動するページ
+    const START_VOICE = 'images/7947704b1d0f6e6af9a59891ebd19dcb.mp4';
+    const NEXT_URL = 'https://qr1f.jp/6v4EEf';
     const total = PUZZLE_IMAGES.length;
     const slideCount = total + 1;
     const st = this.state || {};
@@ -1493,6 +1524,8 @@ class Component extends DCLogic {
       if (r === 'start') next.pzStarted = true;
       if (r === 'correct' && cur >= total) next.pzInputs = Object.assign({}, s.pzInputs, { [cur]: '' });
       this.setState(next);
+      // 送信ボタンの操作の中で再生を始める（スマホで自動再生を止められないように）
+      if (r === 'start' && !s.pzStarted) this.voicePlay(START_VOICE, NEXT_URL);
     };
     const onInput = (e) => {
       const cur = toQ((this.state && this.state.pzIndex) || 0);
@@ -1590,6 +1623,17 @@ class Component extends DCLogic {
         placeSolved: !!solved[total],
         showStep1: !!solved[total] && !st.pzStarted,
         showStep2: !!st.pzStarted,
+        voice: {
+          title: st.voice === 'done' ? '次のページへ移動しています…'
+            : st.voice === 'blocked' ? '下のボタンを押して音声を再生してください。'
+            : '音声を再生中です。音量を上げて、最後までお聞きください。',
+          body: '音声が終わると、自動で次のページへ移動します。',
+          progress: Math.min(100, (st.voicePos || 0) * 100).toFixed(1) + '%',
+          showPlay: st.voice === 'blocked',
+          done: st.voice === 'done',
+          nextUrl: NEXT_URL,
+          play: () => this.voicePlay(START_VOICE, NEXT_URL)
+        },
         isStart: result === 'start' && onPlace,
         isWrong: result === 'wrong',
         isEmpty: result === 'empty',
