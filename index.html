@@ -646,8 +646,8 @@ section{scroll-margin-top:84px}
 <sc-if value="{{pz.showStep1}}" hint-placeholder-val="{{ false }}">
 <div role="status" style="box-sizing: border-box; border: 3px solid #111111; background: {{accent}}; padding: clamp(16px, 3vw, 22px); display: flex; flex-direction: column; gap: 10px">
 <div style="align-self: flex-start; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; letter-spacing: 0.08em; background: #111111; color: {{accent}}; padding: 4px 10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="5"></circle><path d="M11.5 11.5 21 21"></path><path d="M17 17l2.5-2.5"></path><path d="M14.5 14.5 16.5 12.5"></path></svg>次の行動</div>
-<p style="margin: 0; font-size: clamp(15px, 4.2vw, 18px); font-weight: 900; line-height: 1.8">15時40分までに、「三井のリパーク 東京ドームホテル駐車場」へ車でお越しください。</p>
-<p style="margin: 0; font-size: clamp(14px, 3.9vw, 16px); line-height: 1.8">駐車場に車を停めてお待ちいただき、15時45分になりましたら、下の「謎の場所 の答え」に<strong>「スタート」</strong>と入力して送信してください。</p>
+<p style="margin: 0; font-size: clamp(15px, 4.2vw, 18px); font-weight: 900; line-height: 1.8">15時30分までに、「三井のリパーク 東京ドームホテル駐車場」へ車でお越しください。</p>
+<p style="margin: 0; font-size: clamp(14px, 3.9vw, 16px); line-height: 1.8">駐車場に車を停めてお待ちいただき、15時40分になりましたら、下の「謎の場所 の答え」に<strong>「スタート」</strong>と入力して送信してください。</p>
 </div>
 </sc-if>
 <sc-if value="{{pz.showStep2}}" hint-placeholder-val="{{ false }}">
@@ -1278,7 +1278,7 @@ class Component extends DCLogic {
     const PLACE_ROWS = ['こたえは', 'みついのりぱーく', 'とうきょうどーむほてる', 'ちゅうしゃじょう'];
     // 「謎の場所」の正解（複数指定可）。
     const PLACE_ANSWERS = ['みついのりぱーくとうきょうどーむほてるちゅうしゃじょう', '三井のリパーク東京ドームホテル駐車場'];
-    // 謎の場所に正解した後、15:45に入力してもらう合言葉
+    // 謎の場所に正解した後、15:40に入力してもらう合言葉
     const START_WORDS = ['スタート'];
     // 「スタート」を受け付け始める日時（日本時間）。テスト中：2026年10月11日 1:15。
     const START_AT = new Date('2026-10-11T01:15:00+09:00').getTime();
