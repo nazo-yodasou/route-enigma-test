@@ -1513,7 +1513,8 @@ class Component extends DCLogic {
       else if (placeDone) {
         // 謎の場所に正解した後は「スタート」の入力を受け付ける
         const isStartWord = START_WORDS.map(norm).indexOf(norm(val)) !== -1;
-        r = !isStartWord ? 'wrong' : (Date.now() < START_AT ? 'early' : 'start');
+        // testMode（テスト用ページ）では受付時刻を待たずにスタートできる
+        r = !isStartWord ? 'wrong' : (Date.now() < START_AT && !this.props.testMode ? 'early' : 'start');
       } else {
         const key = cur >= total ? PLACE_ANSWERS : PUZZLE_ANSWERS[cur];
         const ans = [].concat(key || []).map(norm).filter(Boolean);
@@ -1576,7 +1577,8 @@ class Component extends DCLogic {
     const REVEAL_LABEL = '11月14日 0:00';
     const now = (this.state && this.state.cdNow) || Date.now();
     const left = Math.max(0, REVEAL_AT - now);
-    const open = left <= 0 || !!this.props.previewPuzzles;
+    // testMode（テスト用ページ）では公開日時を待たずに謎を表示する
+    const open = left <= 0 || !!this.props.previewPuzzles || !!this.props.testMode;
     const two = (n) => (n < 10 ? '0' + n : '' + n);
     const sec = Math.floor(left / 1000);
     const cd = {
@@ -1668,7 +1670,7 @@ class Component extends DCLogic {
     };
   }
 }
-dcMount(Component, document.getElementById('dc-tpl'), document.getElementById('dc-root'), {"accent": "#FFE100", "previewPuzzles": false});
+dcMount(Component, document.getElementById('dc-tpl'), document.getElementById('dc-root'), {"accent": "#FFE100", "previewPuzzles": false, "testMode": true});
 </script>
 </body>
 </html>
