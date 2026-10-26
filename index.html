@@ -1182,9 +1182,9 @@ class Component extends DCLogic {
     this.tsTimer = setTimeout(() => this.setState({ ts: this.tsFresh(cur.failed + 1) }), 1800);
   }
   // ===== 音階ゲーム（Q.25） =====
-  // ラウンドごとの音の数・使う鍵盤の数（ドから数えて）・1音の長さ（ミリ秒）。
+  // ラウンドごとの音の数・使う鍵盤の数（ドから数えて）・1音の長さ（ミリ秒）・dark（お手本で鍵盤を光らせず音だけにする）。
   // お手本のメロディと同じ順に鍵盤を押し、3ラウンド連続で正解するとクリア。
-  scRounds() { return [{ notes: 3, range: 5, ms: 650 }, { notes: 5, range: 8, ms: 480 }, { notes: 7, range: 8, ms: 360 }]; }
+  scRounds() { return [{ notes: 3, range: 5, ms: 650 }, { notes: 7, range: 8, ms: 480 }, { notes: 10, range: 8, ms: 360, dark: true }]; }
   scKeys() {
     return [
       { name: 'ド', aria: 'ド', f: 261.63 }, { name: 'レ', aria: 'レ', f: 293.66 }, { name: 'ミ', aria: 'ミ', f: 329.63 },
@@ -1243,7 +1243,7 @@ class Component extends DCLogic {
     if (i >= cur.seq.length) { this.scSet({ status: 'input', lit: -1 }); return; }
     const k = cur.seq[i];
     this.scTone(k, cfg.ms);
-    this.scSet({ lit: k });
+    this.scSet({ lit: cfg.dark ? -1 : k });
     this.scTimer = setTimeout(() => {
       this.scSet({ lit: -1 });
       this.scTimer = setTimeout(() => this.scPlay(i + 1, cfg), Math.round(cfg.ms * 0.3));
@@ -1614,10 +1614,10 @@ class Component extends DCLogic {
       steps: Array.from({ length: scLen }, (_, i) => (i < scFilled ? '#111111' : '#FFFFFF')),
       progressLabel: scLen + '音のうち' + scFilled + '音正解',
       message: scSt.status === 'won' ? 'クリア！Q.25 正解'
-        : scSt.status === 'roundWin' ? '正解！次は音が増えて速くなる'
+        : scSt.status === 'roundWin' ? (scRounds[scSt.round] && scRounds[scSt.round].dark ? '正解！最終ラウンドは鍵盤が光らない' : '正解！次は音が増えて速くなる')
         : scSt.status === 'lost' ? '残念…正しい鍵盤はここ'
         : scSt.status === 'input' ? '同じ順に鍵盤を押せ（' + scSt.pos + ' / ' + scLen + '）'
-        : scSt.status === 'listen' ? 'よく聴いて、光る鍵盤を覚えろ'
+        : scSt.status === 'listen' ? (scRounds[scSt.round - 1].dark ? '音だけをよく聴いて覚えろ' : 'よく聴いて、光る鍵盤を覚えろ')
         : scSt.failed > 0 ? '間違い！メロディが入れ替わった'
         : '3ラウンド連続でメロディを当てろ',
       msgColor: scSt.status === 'won' || scSt.status === 'roundWin' ? '#0F6A3D' : scSt.status === 'lost' ? '#C0281D' : '#111111',
@@ -1764,7 +1764,7 @@ class Component extends DCLogic {
           solved: !!solved[OF_Q]
         } : idx === SC_Q ? {
           title: 'Q.25 は音階ゲーム',
-          body: 'スタートを押すと、鍵盤が光りながらお手本のメロディが流れます。同じ順番で鍵盤を押し、3ラウンド連続で正解すれば正解です。ラウンドごとに音が増え、速くなります。間違えるとメロディがランダムに入れ替わり、ラウンド1からやり直しです。音が出ないときは、マナーモードを解除して音量を上げてください。',
+          body: 'スタートを押すと、鍵盤が光りながらお手本のメロディが流れます。同じ順番で鍵盤を押し、3ラウンド連続で正解すれば正解です。ラウンドごとに音が増え（3音→7音→10音）、速くなります。最終ラウンドは鍵盤が光らず、音だけで当てます。間違えるとメロディがランダムに入れ替わり、ラウンド1からやり直しです。音が出ないときは、マナーモードを解除して音量を上げてください。',
           solved: !!solved[SC_Q]
         } : idx === TS_Q ? {
           title: 'Q.28 はスリーシェルゲーム',
