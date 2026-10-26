@@ -725,6 +725,26 @@ section{scroll-margin-top:84px}
 </div>
 </div>
 </sc-if>
+<sc-if value="{{q.isSc}}" hint-placeholder-val="{{ false }}">
+<div style="position: relative; width: 100%; height: 0; padding-top: 75%; box-sizing: border-box; overflow: hidden; border: 2px solid #111111; background: {{accent}}">
+<div style="position: absolute; top: 3%; left: 2.25%; right: 2.25%; bottom: 3%; box-sizing: border-box; overflow: hidden; background: #FFFFFF; border: 2px solid #111111">
+<div style="position: absolute; top: 4%; left: 4%; right: 4%; display: flex; align-items: center; justify-content: space-between; gap: 8px">
+<span style="font-family: 'Big Shoulders Display', sans-serif; font-weight: 900; font-size: clamp(13px, 3.4vw, 22px); line-height: 1; letter-spacing: 0.08em; white-space: nowrap">ROUND {{pz.sc.round}} / 3</span>
+<span aria-label="{{pz.sc.clearedLabel}}" style="display: flex; gap: 4px"><sc-for list="{{pz.sc.dots}}" as="d" hint-placeholder-count="3"><span style="width: clamp(9px, 2.2vw, 14px); height: clamp(9px, 2.2vw, 14px); box-sizing: border-box; border: 2px solid #111111; background: {{d}}"></span></sc-for></span>
+</div>
+<p aria-live="polite" style="position: absolute; top: 12%; left: 4%; right: 4%; margin: 0; text-align: center; font-weight: 900; font-size: clamp(11px, 2.8vw, 17px); line-height: 1.4; color: {{pz.sc.msgColor}}">{{pz.sc.message}}</p>
+<div aria-label="{{pz.sc.progressLabel}}" style="position: absolute; top: 24%; left: 4%; right: 4%; display: flex; justify-content: center; gap: clamp(4px, 1.2vw, 8px)"><sc-for list="{{pz.sc.steps}}" as="d" hint-placeholder-count="3"><span style="width: clamp(10px, 2.6vw, 16px); height: clamp(10px, 2.6vw, 16px); box-sizing: border-box; border: 2px solid #111111; border-radius: 50%; background: {{d}}"></span></sc-for></div>
+<sc-if value="{{pz.sc.showStart}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{pz.sc.start}}" style="-webkit-appearance: none; appearance: none; position: absolute; left: 50%; top: 33%; transform: translateX(-50%); min-height: 40px; margin: 0; padding: 0 clamp(14px, 4vw, 28px); border-radius: 0; font-family: inherit; font-size: clamp(12px, 3vw, 16px); font-weight: 900; white-space: nowrap; color: {{accent}}; background: #111111; border: 2px solid #111111; cursor: pointer">{{pz.sc.startLabel}}</button>
+</sc-if>
+<div role="group" aria-label="鍵盤（ドから高いドまで8音）" style="position: absolute; top: 54%; left: 4%; right: 4%; bottom: 5%; display: flex; gap: clamp(2px, 0.8vw, 6px)">
+<sc-for list="{{pz.sc.keys}}" as="k" hint-placeholder-count="8">
+<button type="button" aria-label="{{k.aria}}" onClick="{{k.press}}" disabled="{{k.locked}}" style="-webkit-appearance: none; appearance: none; flex: 1 1 0; min-width: 0; height: 100%; margin: 0; padding: 0 0 6%; box-sizing: border-box; border: 2px solid #111111; border-radius: 0; background: {{k.bg}}; color: {{k.ink}}; font-family: inherit; font-weight: 900; font-size: clamp(10px, 2.6vw, 16px); line-height: 1; display: flex; align-items: flex-end; justify-content: center; touch-action: manipulation; cursor: {{k.cursor}}; transition: background 80ms linear">{{k.name}}</button>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
 <sc-if value="{{q.isMs}}" hint-placeholder-val="{{ false }}">
 <div style="width: 100%; box-sizing: border-box; overflow: hidden; border: 2px solid #111111; background: {{accent}}; padding: clamp(8px, 2.2vw, 18px); display: flex; align-items: stretch; gap: clamp(6px, 1.8vw, 14px)">
 <div role="group" aria-label="マインスイーパー 9×9マス・地雷10個" style="flex: 0 0 72%; width: 72%; min-width: 0; aspect-ratio: 1 / 1; box-sizing: border-box; background: #111111; border: 2px solid #111111; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); grid-template-rows: repeat(9, minmax(0, 1fr)); gap: 2px; touch-action: manipulation">
@@ -980,6 +1000,8 @@ class Component extends DCLogic {
     clearTimeout(this.pzScrollTimer);
     clearTimeout(this.msTimer);
     clearTimeout(this.tsTimer);
+    clearTimeout(this.scTimer);
+    clearTimeout(this.scTapTimer);
     clearInterval(this.ofTimer);
     clearTimeout(this.ofLostTimer);
   }
@@ -1159,6 +1181,98 @@ class Component extends DCLogic {
     clearTimeout(this.tsTimer);
     this.tsTimer = setTimeout(() => this.setState({ ts: this.tsFresh(cur.failed + 1) }), 1800);
   }
+  // ===== 音階ゲーム（Q.25） =====
+  // ラウンドごとの音の数・使う鍵盤の数（ドから数えて）・1音の長さ（ミリ秒）。
+  // お手本のメロディと同じ順に鍵盤を押し、3ラウンド連続で正解するとクリア。
+  scRounds() { return [{ notes: 3, range: 5, ms: 650 }, { notes: 5, range: 8, ms: 480 }, { notes: 7, range: 8, ms: 360 }]; }
+  scKeys() {
+    return [
+      { name: 'ド', aria: 'ド', f: 261.63 }, { name: 'レ', aria: 'レ', f: 293.66 }, { name: 'ミ', aria: 'ミ', f: 329.63 },
+      { name: 'ファ', aria: 'ファ', f: 349.23 }, { name: 'ソ', aria: 'ソ', f: 392.0 }, { name: 'ラ', aria: 'ラ', f: 440.0 },
+      { name: 'シ', aria: 'シ', f: 493.88 }, { name: '高ド', aria: '高いド', f: 523.25 }
+    ];
+  }
+  scFresh(failed) { return { status: 'ready', round: 1, seq: [], pos: 0, lit: -1, tap: -1, wrong: -1, failed: failed || 0 }; }
+  scSet(patch) {
+    const cur = (this.state && this.state.sc) || this.scFresh(0);
+    this.setState({ sc: Object.assign({}, cur, patch) });
+  }
+  // 音を鳴らす準備（スマホでは画面をタップした操作の中で始める必要がある）
+  scAudioCtx() {
+    if (typeof window === 'undefined') return null;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    if (!this.scAudio) this.scAudio = new AC();
+    if (this.scAudio.state === 'suspended') this.scAudio.resume();
+    return this.scAudio;
+  }
+  scTone(k, ms) {
+    const ac = this.scAudioCtx();
+    if (!ac) return;
+    const o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime, d = Math.max(0.18, (ms / 1000) * 0.85);
+    o.type = 'triangle';
+    o.frequency.value = this.scKeys()[k].f;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.35, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    o.connect(g);
+    g.connect(ac.destination);
+    o.start(t);
+    o.stop(t + d + 0.05);
+  }
+  scStart() {
+    const cur = (this.state && this.state.sc) || this.scFresh(0);
+    if (cur.status !== 'ready' && cur.status !== 'roundWin') return;
+    this.scAudioCtx();
+    const round = cur.status === 'roundWin' ? cur.round + 1 : 1;
+    const cfg = this.scRounds()[round - 1];
+    // 毎回ランダムなメロディ（同じ音が続かないようにする）
+    const seq = [];
+    while (seq.length < cfg.notes) {
+      const k = Math.floor(Math.random() * cfg.range);
+      if (!seq.length || k !== seq[seq.length - 1]) seq.push(k);
+    }
+    clearTimeout(this.scTimer);
+    clearTimeout(this.scTapTimer);
+    this.scSet({ status: 'listen', round, seq, pos: 0, lit: -1, tap: -1, wrong: -1 });
+    this.scTimer = setTimeout(() => this.scPlay(0, cfg), 700);
+  }
+  scPlay(i, cfg) {
+    const cur = (this.state && this.state.sc) || this.scFresh(0);
+    if (cur.status !== 'listen') return;
+    if (i >= cur.seq.length) { this.scSet({ status: 'input', lit: -1 }); return; }
+    const k = cur.seq[i];
+    this.scTone(k, cfg.ms);
+    this.scSet({ lit: k });
+    this.scTimer = setTimeout(() => {
+      this.scSet({ lit: -1 });
+      this.scTimer = setTimeout(() => this.scPlay(i + 1, cfg), Math.round(cfg.ms * 0.3));
+    }, Math.round(cfg.ms * 0.7));
+  }
+  scPress(k, qIndex) {
+    const s = this.state || {};
+    const cur = s.sc || this.scFresh(0);
+    if (cur.status !== 'input') return;
+    this.scTone(k, this.scRounds()[cur.round - 1].ms);
+    clearTimeout(this.scTapTimer);
+    if (k === cur.seq[cur.pos]) {
+      const pos = cur.pos + 1;
+      const done = pos >= cur.seq.length;
+      const last = done && cur.round >= this.scRounds().length;
+      const next = { sc: Object.assign({}, cur, { pos, tap: k, status: done ? (last ? 'won' : 'roundWin') : 'input' }) };
+      if (last) {
+        next.pzSolved = Object.assign({}, s.pzSolved, { [qIndex]: true });
+        next.pzResults = Object.assign({}, s.pzResults, { [qIndex]: 'correct' });
+      }
+      this.setState(next);
+      this.scTapTimer = setTimeout(() => this.scSet({ tap: -1 }), 180);
+      return;
+    }
+    // 失敗：正しい鍵盤を見せたあと、新しいランダムなメロディでラウンド1からやり直し
+    clearTimeout(this.scTimer);
+    this.scSet({ status: 'lost', wrong: k, tap: -1 });
+    this.scTimer = setTimeout(() => this.setState({ sc: this.scFresh(cur.failed + 1) }), 2000);
+  }
   // ===== マインスイーパー（Q.15） =====
   // 盤面サイズと地雷数
   msSize() { return { rows: 9, cols: 9, mines: 10 }; }
@@ -1336,7 +1450,9 @@ class Component extends DCLogic {
     const TS_Q = 27;
     // 一筆書きに置き換える問題（16 = Q.17）。制限時間内に全マスを一筆で通ると正解扱いになります。
     const OF_Q = 16;
-    const isGame = (i) => i === MS_Q || i === TS_Q || i === OF_Q;
+    // 音階ゲームに置き換える問題（24 = Q.25）。3ラウンド連続でメロディを当てると正解扱いになります。
+    const SC_Q = 24;
+    const isGame = (i) => i === MS_Q || i === TS_Q || i === OF_Q || i === SC_Q;
     const items = PUZZLE_IMAGES.map((img, i) => ({
       no: 'Q.' + pad(i + 1),
       label: '問題 ' + (i + 1) + ' / ' + total,
@@ -1346,6 +1462,7 @@ class Component extends DCLogic {
       isMs: i === MS_Q,
       isTs: i === TS_Q,
       isOf: i === OF_Q,
+      isSc: i === SC_Q,
       solved: !!solved[i]
     }));
     const msSt = st.ms || this.msFresh(0);
@@ -1484,6 +1601,45 @@ class Component extends DCLogic {
         };
       })
     };
+    const scSt = st.sc || this.scFresh(0);
+    const scRounds = this.scRounds();
+    const scTotal = scRounds.length;
+    const scCleared = scSt.status === 'won' ? scTotal : (scSt.status === 'roundWin' ? scSt.round : scSt.round - 1);
+    const scLen = scSt.seq.length || scRounds[scSt.round - 1].notes;
+    const scFilled = scSt.status === 'roundWin' || scSt.status === 'won' ? scLen : (scSt.status === 'input' || scSt.status === 'lost' ? scSt.pos : 0);
+    const scView = {
+      round: scSt.round,
+      dots: [0, 1, 2].map((i) => (i < scCleared ? '#111111' : '#FFFFFF')),
+      clearedLabel: scCleared + ' / ' + scTotal + ' ラウンド正解',
+      steps: Array.from({ length: scLen }, (_, i) => (i < scFilled ? '#111111' : '#FFFFFF')),
+      progressLabel: scLen + '音のうち' + scFilled + '音正解',
+      message: scSt.status === 'won' ? 'クリア！Q.25 正解'
+        : scSt.status === 'roundWin' ? '正解！次は音が増えて速くなる'
+        : scSt.status === 'lost' ? '残念…正しい鍵盤はここ'
+        : scSt.status === 'input' ? '同じ順に鍵盤を押せ（' + scSt.pos + ' / ' + scLen + '）'
+        : scSt.status === 'listen' ? 'よく聴いて、光る鍵盤を覚えろ'
+        : scSt.failed > 0 ? '間違い！メロディが入れ替わった'
+        : '3ラウンド連続でメロディを当てろ',
+      msgColor: scSt.status === 'won' || scSt.status === 'roundWin' ? '#0F6A3D' : scSt.status === 'lost' ? '#C0281D' : '#111111',
+      showStart: scSt.status === 'ready' || scSt.status === 'roundWin',
+      startLabel: scSt.status === 'roundWin' ? 'ラウンド ' + (scSt.round + 1) + ' へ' : (scSt.failed > 0 ? 'もう一度挑戦' : 'スタート'),
+      start: () => this.scStart(),
+      keys: this.scKeys().map((key, k) => {
+        const active = scSt.status === 'input';
+        const bg = scSt.wrong === k ? '#C0281D'
+          : scSt.status === 'lost' && scSt.seq[scSt.pos] === k ? '#0F6A3D'
+          : scSt.lit === k || scSt.tap === k ? accent : '#FFFFFF';
+        return {
+          name: key.name,
+          aria: key.aria + 'の鍵盤',
+          bg,
+          ink: bg === '#C0281D' || bg === '#0F6A3D' ? '#FFFFFF' : '#111111',
+          locked: !active,
+          cursor: active ? 'pointer' : 'default',
+          press: () => this.scPress(k, SC_Q)
+        };
+      })
+    };
     let qn = 0;
     const placeRows = PLACE_ROWS.map((line) => ({
       cells: Array.from(line).map((ch) => {
@@ -1598,6 +1754,7 @@ class Component extends DCLogic {
         items,
         ms: msView,
         ts: tsView,
+        sc: scView,
         onGame: isGame(idx),
         showForm: !isGame(idx),
         of: ofView,
@@ -1605,6 +1762,10 @@ class Component extends DCLogic {
           title: 'Q.17 は一筆書き',
           body: '赤枠のマスからスタートし、指でなぞって白いマスをすべて一度ずつ通れば正解です。斜めには進めません。制限時間は10秒。時間切れになると問題がランダムに入れ替わります。',
           solved: !!solved[OF_Q]
+        } : idx === SC_Q ? {
+          title: 'Q.25 は音階ゲーム',
+          body: 'スタートを押すと、鍵盤が光りながらお手本のメロディが流れます。同じ順番で鍵盤を押し、3ラウンド連続で正解すれば正解です。ラウンドごとに音が増え、速くなります。間違えるとメロディがランダムに入れ替わり、ラウンド1からやり直しです。音が出ないときは、マナーモードを解除して音量を上げてください。',
+          solved: !!solved[SC_Q]
         } : idx === TS_Q ? {
           title: 'Q.28 はスリーシェルゲーム',
           body: 'ボールの入ったカップを見抜き、3ラウンド連続で当てれば正解です。ラウンドごとにシャッフルが速くなります。外すと配置がランダムに入れ替わり、ラウンド1からやり直しです。',
